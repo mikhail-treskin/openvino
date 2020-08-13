@@ -48,6 +48,9 @@ namespace ngraph
                     clone_with_new_inputs(const OutputVector& new_args) const override;
 
                 double get_alpha() const { return m_alpha; }
+
+                bool evaluate(const HostTensorVector& outputs,
+                              const HostTensorVector& inputs) const override;
             private:
                 double m_alpha;
             };

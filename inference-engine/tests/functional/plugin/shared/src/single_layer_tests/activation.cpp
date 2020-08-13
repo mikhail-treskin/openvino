@@ -169,7 +169,6 @@ void ActivationParamLayerTest::Infer() {
     inferRequest.Infer();
 }
 
-
 void ActivationParamLayerTest::SetUp() {
     InferenceEngine::Precision netPrecision;
     std::pair<std::vector<size_t>, std::vector<size_t>> shapes;

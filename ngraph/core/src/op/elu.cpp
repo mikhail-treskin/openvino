@@ -14,6 +14,7 @@
 // limitations under the License.
 //*****************************************************************************
 
+#include <ngraph/runtime/reference/elu.hpp>
 #include "ngraph/op/elu.hpp"
 #include "ngraph/attribute_visitor.hpp"
 #include "ngraph/builder/autobroadcast.hpp"
@@ -47,4 +48,38 @@ shared_ptr<Node> op::Elu::clone_with_new_inputs(const OutputVector& new_args) co
 {
     check_new_args_count(this, new_args);
     return make_shared<Elu>(new_args.at(0), m_alpha);
+}
+
+
+template <element::Type_t ET>
+bool evaluate(const HostTensorPtr& arg,const HostTensorPtr& out, double alpha)
+{
+    runtime::reference::elu(arg->get_data_ptr<ET>(),
+                                out->get_data_ptr<ET>(),
+                                shape_size(arg->get_shape()),
+                                alpha);
+    return true;
+}
+
+bool evaluate_elu(const HostTensorPtr& arg, const HostTensorPtr& out, double alpha)
+{
+    bool rc = true;
+    switch (arg->get_element_type())
+    {
+        TYPE_CASE(i8)(arg, out, alpha);
+            break;
+        TYPE_CASE(bf16)(arg, out, alpha);
+            break;
+        TYPE_CASE(f16)(arg, out, alpha);
+            break;
+        TYPE_CASE(f32)(arg, out, alpha);
+            break;
+        default: rc = false; break;
+    }
+    return rc;
+}
+
+
+bool op::v0::Elu::evaluate(const HostTensorVector &outputs, const HostTensorVector &inputs) const {
+    return evaluate_elu(inputs[0], outputs[0], m_alpha);
 }
