@@ -14,6 +14,7 @@
 // limitations under the License.
 //*****************************************************************************
 
+#include <ngraph/runtime/reference/hard_sigmoid.hpp>
 #include "evaluates_map.hpp"
 #include "ngraph/ops.hpp"
 #include "ngraph/runtime/reference/convolution.hpp"
@@ -376,6 +377,20 @@ namespace {
                                         op->get_pads_begin(),
                                         op->get_pads_end(),
                                         !op->get_exclude_pad());
+        return true;
+    }
+
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::HardSigmoid> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::hard_sigmoid<T>(input[0]->get_data_ptr<T>(),
+                                            input[1]->get_data_ptr<T>(),
+                                            input[2]->get_data_ptr<T>(),
+                                            outputs[0]->get_data_ptr<T>(),
+                                            shape_size(input[0]->get_shape()),
+                                            shape_size(input[1]->get_shape()),
+                                            shape_size(input[2]->get_shape()));
         return true;
     }
 
