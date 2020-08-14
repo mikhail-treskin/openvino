@@ -31,6 +31,8 @@
 #include <ngraph/runtime/reference/hard_sigmoid.hpp>
 #include <ngraph/runtime/reference/elu.hpp>
 #include <ngraph/runtime/reference/selu.hpp>
+#include <ngraph/runtime/reference/ceiling.hpp>
+#include <ngraph/runtime/reference/gelu.hpp>
 
 using namespace ngraph;
 using namespace std;
@@ -407,7 +409,7 @@ namespace {
         return true;
     }
 
-template<element::Type_t ET>
+    template<element::Type_t ET>
     bool evaluate(const shared_ptr<op::v0::Selu> &op, const HostTensorVector &outputs,
                   const HostTensorVector &input) {
         using T = typename element_type_traits<ET>::value_type;
@@ -421,8 +423,27 @@ template<element::Type_t ET>
         return true;
     }
 
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::Ceiling> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::ceiling<T>(input[0]->get_data_ptr<T>(),
+                                       outputs[0]->get_data_ptr<T>(),
+                                       shape_size(input[0]->get_shape()));
+        return true;
+    }
 
-template<typename T>
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::Gelu> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::gelu<T>(input[0]->get_data_ptr<T>(),
+                                    outputs[0]->get_data_ptr<T>(),
+                                    shape_size(input[0]->get_shape()));
+        return true;
+    }
+
+    template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {
         switch (node->get_element_type()) {
             case element::Type_t::boolean:
