@@ -1,5 +1,5 @@
 //*****************************************************************************
-// Copyright 2017-2020 Intel Corporation
+// Copyright 2020 Intel Corporation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,15 +26,22 @@ namespace ngraph
         namespace reference
         {
             template <typename T>
-            void elu(const T* arg, T* out, size_t count, double alpha)
+            void selu(const T* arg,
+                      const T* alpha,
+                      const T* lambda,
+                      T* out,
+                      size_t size_arg,
+                      size_t size_alpha,
+                      size_t size_lambda)
             {
-                for (size_t i = 0; i < count; i++)
+                int cnt = 0;
+                for (size_t i = 0; i < size_arg; ++i)
                 {
-                    out[i] = arg[i] < T(0) ? T(alpha * (std::exp(arg[i]) - 1.0)) : arg[i];
+                    out[i] = arg[i] > T(0) ? T(lambda[cnt % size_lambda] * arg[i]) :
+                            T(alpha[cnt % size_alpha] * lambda[cnt % size_lambda] * (std::exp(arg[i]) - 1));
+                    cnt++;
                 }
             }
         }
-
-
     }
 }

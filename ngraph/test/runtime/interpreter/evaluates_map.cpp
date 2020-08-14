@@ -14,8 +14,6 @@
 // limitations under the License.
 //*****************************************************************************
 
-#include <ngraph/runtime/reference/hard_sigmoid.hpp>
-#include <ngraph/runtime/reference/elu.hpp>
 #include "evaluates_map.hpp"
 #include "ngraph/ops.hpp"
 #include "ngraph/runtime/reference/convolution.hpp"
@@ -30,6 +28,9 @@
 #include "reference/scatter_nd_update.hpp"
 #include "reference/scatter_update.hpp"
 #include "ngraph/runtime/reference/select.hpp"
+#include <ngraph/runtime/reference/hard_sigmoid.hpp>
+#include <ngraph/runtime/reference/elu.hpp>
+#include <ngraph/runtime/reference/selu.hpp>
 
 using namespace ngraph;
 using namespace std;
@@ -406,7 +407,22 @@ namespace {
         return true;
     }
 
-    template<typename T>
+template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::Selu> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::selu<T>(input[0]->get_data_ptr<T>(),
+                                    input[1]->get_data_ptr<T>(),
+                                    input[2]->get_data_ptr<T>(),
+                                    outputs[0]->get_data_ptr<T>(),
+                                    shape_size(input[0]->get_shape()),
+                                    shape_size(input[1]->get_shape()),
+                                    shape_size(input[2]->get_shape()));
+        return true;
+    }
+
+
+template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {
         switch (node->get_element_type()) {
             case element::Type_t::boolean:
