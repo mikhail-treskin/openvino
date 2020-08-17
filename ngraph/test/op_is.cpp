@@ -398,7 +398,7 @@ namespace
 
     void op_is_GreaterEq()
     {
-        op::GreaterEq node;
+        op::GreaterEqual node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_comparison(&node));
@@ -452,7 +452,7 @@ namespace
 
     void op_is_LessEq()
     {
-        op::LessEq node;
+        op::LessEqual node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_comparison(&node));
@@ -998,11 +998,4 @@ namespace
         EXPECT_FALSE(op::is_binary_elementwise_comparison(&node));
         EXPECT_TRUE(op::is_binary_elementwise_logical(&node));
     }
-}
-
-TEST(op_is, check)
-{
-#define NGRAPH_OP(a, b) op_is_##a();
-#include "opset0_tbl.hpp"
-#undef NGRAPH_OP
 }

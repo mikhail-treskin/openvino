@@ -22,37 +22,6 @@ namespace ngraph
 {
     namespace op
     {
-        namespace v0
-        {
-            /// \brief Elementwise subtraction operation.
-            class NGRAPH_API Subtract : public util::BinaryElementwiseArithmetic
-            {
-            public:
-                static constexpr NodeTypeInfo type_info{"Subtract", 0};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
-                Subtract()
-                    : util::BinaryElementwiseArithmetic(AutoBroadcastSpec::NONE)
-                {
-                }
-
-                /// \brief Constructs a subtraction operation.
-                ///
-                /// \param arg0 Node that produces the first input tensor.
-                /// \param arg1 Node that produces the second input tensor.
-                /// \param auto_broadcast Auto broadcast specification
-                Subtract(const Output<Node>& arg0,
-                         const Output<Node>& arg1,
-                         const AutoBroadcastSpec& auto_broadcast = AutoBroadcastSpec());
-
-                virtual std::shared_ptr<Node>
-                    clone_with_new_inputs(const OutputVector& new_args) const override;
-
-                bool evaluate(const HostTensorVector& outputs,
-                              const HostTensorVector& inputs) const override;
-            };
-
-        } // namespace v0
-
         namespace v1
         {
             /// \brief Elementwise subtraction operation.
@@ -83,7 +52,7 @@ namespace ngraph
             };
         } // namespace v1
 
-        using v0::Subtract;
+        using v1::Subtract;
     } // namespace op
 
     NGRAPH_API

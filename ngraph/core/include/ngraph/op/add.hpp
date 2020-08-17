@@ -24,44 +24,6 @@ namespace ngraph
 {
     namespace op
     {
-        namespace v0
-        {
-            /// \brief Elementwise addition operation.
-            ///
-            class NGRAPH_API Add : public util::BinaryElementwiseArithmetic
-            {
-            public:
-                static constexpr NodeTypeInfo type_info{"Add", 0};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
-                /// \brief Constructs an uninitialized addition operation
-                Add()
-                    : util::BinaryElementwiseArithmetic(AutoBroadcastSpec::NONE)
-                {
-                }
-
-                /// \brief Constructs an addition operation.
-                ///
-                /// \param arg0 Output that produces the first input tensor.<br>
-                /// `[d0, ...]`
-                /// \param arg1 Output that produces the second input tensor.<br>
-                /// `[d0, ...]`
-                /// \param auto_broadcast Auto broadcast specification
-                ///
-                /// Output `[d0, ...]`
-                ///
-                Add(const Output<Node>& arg0,
-                    const Output<Node>& arg1,
-                    const AutoBroadcastSpec& auto_broadcast = AutoBroadcastSpec());
-
-                std::shared_ptr<Node>
-                    clone_with_new_inputs(const OutputVector& new_args) const override;
-
-                bool visit_attributes(AttributeVisitor& visitor) override;
-                bool evaluate(const HostTensorVector& outputs,
-                              const HostTensorVector& inputs) const override;
-            };
-        } // namespace v0
-
         namespace v1
         {
             /// \brief Elementwise addition operation.
@@ -102,7 +64,7 @@ namespace ngraph
             };
 
         } // namespace v1
-        using v0::Add;
+        using v1::Add;
     } // namespace op
 
     NGRAPH_API

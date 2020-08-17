@@ -22,35 +22,6 @@ namespace ngraph
 {
     namespace op
     {
-        namespace v0
-        {
-            /// \brief Elementwise greater-than-or-equal operation.
-            class NGRAPH_API GreaterEq : public util::BinaryElementwiseComparison
-            {
-            public:
-                static constexpr NodeTypeInfo type_info{"GreaterEq", 0};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
-                /// \brief Constructs a greater-than-or-equal operation.
-                GreaterEq()
-                    : util::BinaryElementwiseComparison(AutoBroadcastSpec::NONE)
-                {
-                }
-                /// \brief Constructs a greater-than-or-equal operation.
-                ///
-                /// \param arg0 Node that produces the first input tensor.
-                /// \param arg1 Node that produces the second input tensor.
-                /// \param auto_broadcast Auto broadcast specification
-                GreaterEq(const Output<Node>& arg0,
-                          const Output<Node>& arg1,
-                          const AutoBroadcastSpec& auto_broadcast = AutoBroadcastSpec());
-
-                virtual std::shared_ptr<Node>
-                    clone_with_new_inputs(const OutputVector& new_args) const override;
-                bool evaluate(const HostTensorVector& outputs,
-                              const HostTensorVector& inputs) const override;
-            };
-        } // namespace v0
-
         namespace v1
         {
             /// \brief Elementwise greater-than-or-equal operation.
@@ -80,10 +51,8 @@ namespace ngraph
                               const HostTensorVector& inputs) const override;
             };
 
-            // DO NOT USE. Will be removed once users switch to GreaterEqual
-            using GreaterEq = GreaterEqual;
         } // namespace v1
 
-        using v0::GreaterEq;
+        using v1::GreaterEqual;
     }
 }
