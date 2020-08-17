@@ -26,6 +26,8 @@
 #include "ngraph/runtime/reference/avg_pool.hpp"
 #include <ngraph/runtime/reference/ceiling.hpp>
 #include <ngraph/runtime/reference/select.hpp>
+#include <ngraph/runtime/reference/convert.hpp>
+#include <ngraph/runtime/reference/batch_norm.hpp>
 
 #include "reference/detection_output.hpp"
 #include "reference/scatter_nd_update.hpp"
@@ -444,6 +446,21 @@ namespace {
         return true;
     }
 
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::BatchNormInference> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::batch_norm_inference<T>(op->get_eps_value(),
+                                                    input[0]->get_data_ptr<T>(),
+                                                    input[1]->get_data_ptr<T>(),
+                                                    input[2]->get_data_ptr<T>(),
+                                                    input[3]->get_data_ptr<T>(),
+                                                    input[4]->get_data_ptr<T>(),
+                                                    outputs[0]->get_data_ptr<T>(),
+                                                    input[2]->get_shape());
+        return true;
+    }
+
     template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {
         switch (node->get_element_type()) {
@@ -453,6 +470,8 @@ namespace {
 //                break;
             case element::Type_t::f16:
                 return evaluate<element::Type_t::f16>(as_type_ptr<T>(node), outputs, inputs);
+            case element::Type_t::f64:
+                return evaluate<element::Type_t::f64>(as_type_ptr<T>(node), outputs, inputs);
             case element::Type_t::f32:
                 return evaluate<element::Type_t::f32>(as_type_ptr<T>(node), outputs, inputs);
             case element::Type_t::i8:
