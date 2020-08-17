@@ -24,15 +24,16 @@
 #include "ngraph/runtime/reference/mvn.hpp"
 #include "ngraph/runtime/reference/lrn.hpp"
 #include "ngraph/runtime/reference/avg_pool.hpp"
+#include <ngraph/runtime/reference/ceiling.hpp>
+#include <ngraph/runtime/reference/select.hpp>
+
 #include "reference/detection_output.hpp"
 #include "reference/scatter_nd_update.hpp"
 #include "reference/scatter_update.hpp"
-#include "ngraph/runtime/reference/select.hpp"
-#include <ngraph/runtime/reference/hard_sigmoid.hpp>
-#include <ngraph/runtime/reference/elu.hpp>
-#include <ngraph/runtime/reference/selu.hpp>
-#include <ngraph/runtime/reference/ceiling.hpp>
-#include <ngraph/runtime/reference/gelu.hpp>
+#include "reference/gelu.hpp"
+#include "reference/hard_sigmoid.hpp"
+#include "reference/elu.hpp"
+#include "reference/selu.hpp"
 
 using namespace ngraph;
 using namespace std;
