@@ -95,10 +95,6 @@ namespace
 
     // Default is that we did nothing
     shared_ptr<Node> op_cast(shared_ptr<Node> node) { return nullptr; }
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Add> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Add, op::v1::Add>(node);
-    }
 
     shared_ptr<Node> op_cast(shared_ptr<op::v1::AvgPool> node)
     {
@@ -260,17 +256,6 @@ namespace
         return replacement_node;
     }
 
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Divide> node)
-    {
-        const auto input_arg0 = node->input_value(0);
-        const auto input_arg1 = node->input_value(1);
-        const auto autob = node->get_autob();
-        const bool pydiv = node->is_pythondiv();
-        auto replacement_node = make_shared<op::v0::Divide>(input_arg0, input_arg1, pydiv, autob);
-        replace_node(node, replacement_node);
-        return replacement_node;
-    }
-
     shared_ptr<Node> op_cast(shared_ptr<op::v1::Reshape> node)
     {
         shared_ptr<Node> replacement_node;
@@ -293,11 +278,6 @@ namespace
         return replacement_node;
     }
 
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Equal> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Equal, op::v1::Equal>(node);
-    }
-
     shared_ptr<Node> op_cast(shared_ptr<op::v1::Gather> node)
     {
         auto axis_node = as_type_ptr<op::Constant>(node->input_value(2).get_node_shared_ptr());
@@ -317,16 +297,6 @@ namespace
             make_shared<op::v0::Gather>(node->input_value(0), node->input_value(1), axis);
         replace_node(node, replacement_node);
         return replacement_node;
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Greater> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Greater, op::v1::Greater>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::GreaterEqual> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::GreaterEq, op::v1::GreaterEqual>(node);
     }
 
     shared_ptr<Node> op_cast(shared_ptr<op::v1::GroupConvolution> node)
@@ -393,16 +363,6 @@ namespace
         return replacement_node;
     }
 
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Less> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Less, op::v1::Less>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::LessEqual> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::LessEq, op::v1::LessEqual>(node);
-    }
-
     shared_ptr<Node> op_cast(shared_ptr<op::v1::LogicalNot> node)
     {
         auto replacement_node = make_shared<op::v0::Not>(node->input_value(0));
@@ -418,26 +378,6 @@ namespace
     shared_ptr<Node> op_cast(shared_ptr<op::v1::LogicalXor> node)
     {
         return op_cast_binary_elementwise_node<op::v0::Xor, op::v1::LogicalXor>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Maximum> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Maximum, op::v1::Maximum>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Minimum> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Minimum, op::v1::Minimum>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Multiply> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Multiply, op::v1::Multiply>(node);
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::NotEqual> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::NotEqual, op::v1::NotEqual>(node);
     }
 
     shared_ptr<Node> op_cast(shared_ptr<op::v1::OneHot> node)
@@ -465,11 +405,6 @@ namespace
 
         replace_node(node, replacement_node);
         return replacement_node;
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Power> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Power, op::v1::Power>(node);
     }
 
     shared_ptr<Node> op_cast(shared_ptr<op::v1::ReduceMax> node)
@@ -507,7 +442,7 @@ namespace
         }
 
         const auto replacement_node =
-            std::make_shared<op::v0::Divide>(sum_node, count_node, op::AutoBroadcastSpec::NUMPY);
+            std::make_shared<op::v1::Divide>(sum_node, count_node, op::AutoBroadcastSpec::NUMPY);
         replace_node(node, replacement_node);
         return replacement_node;
     }
@@ -647,11 +582,6 @@ namespace
 
         replace_node(node, replacement_node);
         return replacement_node;
-    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Subtract> node)
-    {
-        return op_cast_binary_elementwise_node<op::v0::Subtract, op::v1::Subtract>(node);
     }
 
     shared_ptr<Node> op_cast(shared_ptr<op::v1::TopK> node)
