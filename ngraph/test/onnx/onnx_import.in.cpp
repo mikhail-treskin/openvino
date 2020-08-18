@@ -1886,7 +1886,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_sign)
     test_case.run();
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, onnx_model_one_hot_with_axis)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_onnx_model_one_hot_with_axis)
 {
     auto function = onnx_import::import_onnx_model(
         file_util::path_join(SERIALIZED_ZOO, "onnx/one_hot_axis.prototxt"));
@@ -1903,7 +1903,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_one_hot_with_axis)
     test_case.run();
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, onnx_model_one_hot_without_axis)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_onnx_model_one_hot_without_axis)
 {
     auto function = onnx_import::import_onnx_model(
         file_util::path_join(SERIALIZED_ZOO, "onnx/one_hot_no_axis.prototxt"));

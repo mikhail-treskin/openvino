@@ -28,6 +28,7 @@
 #include <ngraph/runtime/reference/select.hpp>
 #include <ngraph/runtime/reference/convert.hpp>
 #include <ngraph/runtime/reference/batch_norm.hpp>
+#include <ngraph/runtime/reference/reverse_sequence.hpp>
 
 #include "reference/detection_output.hpp"
 #include "reference/scatter_nd_update.hpp"
@@ -460,6 +461,20 @@ namespace {
                                                     input[2]->get_shape());
         return true;
     }
+
+    template<element::Type_t ET, element::Type_t EU>
+    bool evaluate(const shared_ptr<op::v0::ReverseSequence> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        using U = typename element_type_traits<EU>::value_type;
+        runtime::reference::reverse_sequence<T>(input[0]->get_data_ptr<T>(),
+                                                outputs[0]->get_data_ptr<T>(),
+                                                shape_size(input[0]->get_shape()),
+                                                op->get_batch_axis(),
+                                                op->get_origin_sequence_axis(),
+                                                input[1]->get_data_ptr<U>());
+        return true;
+}
 
     template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {

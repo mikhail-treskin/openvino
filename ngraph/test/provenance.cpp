@@ -28,8 +28,6 @@
 #include "ngraph/pass/manager.hpp"
 #include "ngraph/provenance.hpp"
 #include "pass/fused_op_decomposition.hpp"
-//#include "pass/opset0_downgrade.hpp"
-//#include "pass/opset1_upgrade.hpp"
 #include "util/provenance_enabler.hpp"
 
 using namespace std;
@@ -514,4 +512,3 @@ TEST(provenance, empty_group)
         }
     }
 }
-/**/
