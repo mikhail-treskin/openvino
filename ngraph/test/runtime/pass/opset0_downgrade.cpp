@@ -498,15 +498,6 @@ namespace
         return replacement_node;
     }
 
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::Select> node)
-    {
-        ngraph::pass::ImplicitBroadcastElimination().run_on_node(node);
-        auto replacement_node = make_shared<op::v0::Select>(
-            node->input_value(0), node->input_value(1), node->input_value(2));
-        replace_node(node, replacement_node);
-        return replacement_node;
-    }
-
     shared_ptr<Node> op_cast(shared_ptr<op::v1::StridedSlice> node)
     {
         auto convert_mask_to_axes = [](const std::vector<int64_t>& mask) {

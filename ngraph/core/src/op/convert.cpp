@@ -74,19 +74,11 @@ namespace
 
         switch (out->get_element_type())
         {
-            TYPE_OUT_CASE(boolean)(arg, out);
-            break;
-            TYPE_OUT_CASE(i8)(arg, out);
-            break;
             TYPE_OUT_CASE(i16)(arg, out);
             break;
             TYPE_OUT_CASE(i32)(arg, out);
             break;
             TYPE_OUT_CASE(i64)(arg, out);
-            break;
-            TYPE_OUT_CASE(u8)(arg, out);
-            break;
-            TYPE_OUT_CASE(u16)(arg, out);
             break;
             TYPE_OUT_CASE(u32)(arg, out);
             break;
