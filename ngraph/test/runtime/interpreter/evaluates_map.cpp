@@ -36,6 +36,7 @@
 #include <ngraph/runtime/reference/pad.hpp>
 #include <ngraph/runtime/reference/dot.hpp>
 #include <ngraph/runtime/reference/replace_slice.hpp>
+#include <ngraph/runtime/reference/gather_nd.hpp>
 
 #include "reference/detection_output.hpp"
 #include "reference/scatter_nd_update.hpp"
@@ -159,14 +160,6 @@ namespace {
     bool evaluate(const shared_ptr<op::v0::CumSum> &op, const HostTensorVector &outputs,
                   const HostTensorVector &inputs) {
         using T = typename element_type_traits<ET>::value_type;
-
-//        runtime::reference::cumsum<T, typename element_type_traits<element::Type_t::i32>::value_type>(
-//                inputs[0]->get_data_ptr<ET>(),
-//                inputs[1]->get_data_ptr<element::Type_t::i32>(),
-//                outputs[0]->get_data_ptr<ET>(),
-//                inputs[0]->get_shape(),
-//                op->is_exclusive(),
-//                op->is_reverse());
 
 #define REF_CALL(U) \
         runtime::reference::cumsum<T, typename element_type_traits<U>::value_type>( \
@@ -634,6 +627,17 @@ namespace {
         return true;
     }
 
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::RNNCell> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &inputs) {
+//        runtime::reference::rnn_cell(inputs[0]->get_data_ptr<char>(),
+//                                outputs[0]->get_data_ptr<char>(),
+//                                inputs[0]->get_shape(),
+//                                outputs[0]->get_shape(),
+//                                op->get_reduction_axes());
+        return true;
+    }
+
     //TODO: Rewrite to v1
     template<element::Type_t ET>
     bool evaluate(const shared_ptr<op::v0::Pad> &op, const HostTensorVector &outputs,
@@ -746,7 +750,23 @@ template<element::Type_t ET>
                 return false;
         }
 #undef REF_CALL
-}
+    }
+
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::GatherND> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        using U = typename element_type_traits<element::Type_t::f32>::value_type;
+
+        runtime::reference::gather_nd<T,U>(
+                input[0]->get_data_ptr<T>(),
+                input[1]->get_data_ptr<U>(),
+                outputs[0]->get_data_ptr<T>(),
+                input[0]->get_shape(),
+                input[1]->get_shape(),
+                outputs[0]->get_shape());
+        return true;
+    }
 
     template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {

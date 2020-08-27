@@ -84,7 +84,7 @@ namespace ngraph
                     {
                         U index = indices[indices_index];
                         // take care of negative indices
-                        index = index >= 0 ? index : index + params_shape[i];
+                        index = index >= U(0) ? index : U(index + params_shape[i]);
                         params_start_corner[i] = index;
                         params_end_corner[i] = index + 1;
                         indices_index++;
