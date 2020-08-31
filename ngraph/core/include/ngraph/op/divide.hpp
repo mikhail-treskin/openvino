@@ -22,11 +22,6 @@ namespace ngraph
 {
     namespace op
     {
-                "This operation is deprecated and will be removed soon. "
-                "Use v1::Divide instead of it.") NGRAPH_API Divide
-                : public util::BinaryElementwiseArithmetic
-                NGRAPH_SUPPRESS_DEPRECATED_START
-                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise division operation.

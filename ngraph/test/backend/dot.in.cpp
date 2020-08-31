@@ -62,7 +62,7 @@ static string s_manifest = "${MANIFEST}";
 //         57576.,  58374.,  59172.,  59970.,  60768.,  61566.,  62364.,
 //         63162.,  63960.])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot_4d_5d_multi_axis)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_4d_5d_multi_axis)
 {
     vector<float> a_data(2 * 3 * 3 * 4);
     for (int i = 0; i < 2 * 3 * 3 * 4; i++)
@@ -122,7 +122,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_4d_5d_multi_axis)
 //
 // array([ 251412.,  254040.])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot_4d_5d_multi_axis_more)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_4d_5d_multi_axis_more)
 {
     vector<float> a_data(2 * 3 * 3 * 4);
     for (int i = 0; i < 2 * 3 * 3 * 4; i++)
@@ -185,7 +185,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_4d_5d_multi_axis_more)
 //
 // Disabled because this test is very slow.
 //
-NGRAPH_TEST(DISABLED_${BACKEND_NAME}, dot_4d_5d_multi_axis_big_fp64_VERY_SLOW)
+NGRAPH_TEST(DISABLED_${BACKEND_NAME}, DISABLED_dot_4d_5d_multi_axis_big_fp64_VERY_SLOW)
 {
     vector<double> a_data(20 * 30 * 30 * 40);
     for (int i = 0; i < 20 * 30 * 30 * 40; i++)
@@ -232,7 +232,7 @@ NGRAPH_TEST(DISABLED_${BACKEND_NAME}, dot_4d_5d_multi_axis_big_fp64_VERY_SLOW)
         read_vector<double>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_0_0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_0_0)
 {
     Shape shape{0};
     auto A = make_shared<op::Parameter>(element::f32, shape);
@@ -258,7 +258,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_0_0)
     EXPECT_TRUE(test::all_close_f((vector<float>{0}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_2x0_0x2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_2x0_0x2)
 {
     Shape shape_a{2, 0};
     Shape shape_b{0, 2};
@@ -286,7 +286,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_2x0_0x2)
     EXPECT_TRUE(test::all_close_f((vector<float>{0, 0, 0, 0}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_0x2_2x0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_0x2_2x0)
 {
     Shape shape_a{0, 2};
 
@@ -310,7 +310,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_0x2_2x0)
     EXPECT_TRUE(test::all_close_f((vector<float>{}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_3x2_2x0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_3x2_2x0)
 {
     Shape shape_a{3, 2};
 
@@ -334,7 +334,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_3x2_2x0)
     EXPECT_TRUE(test::all_close_f((vector<float>{}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_0x2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_scalar_0x2)
 {
     Shape shape_a{};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -357,7 +357,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_0x2)
     EXPECT_TRUE(test::all_close_f((vector<float>{}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_2x0_0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_2x0_0)
 {
     Shape shape_a{2, 0};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -384,7 +384,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_2x0_0)
     EXPECT_TRUE(test::all_close_f((vector<float>{0, 0}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot1d)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot1d)
 {
     Shape shape{4};
     auto A = make_shared<op::Parameter>(element::f32, shape);
@@ -406,7 +406,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot1d)
     EXPECT_TRUE(test::all_close_f((vector<float>{170}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot2d)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot2d)
 {
     Shape shape{2, 2};
     auto A = make_shared<op::Parameter>(element::f32, shape);
@@ -428,7 +428,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot2d)
     EXPECT_TRUE(test::all_close_f((vector<float>{19, 22, 43, 50}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot2d_non_square)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot2d_non_square)
 {
     Shape shape_in1{2, 3};
     Shape shape_in2{3, 3};
@@ -477,7 +477,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot2d_non_square)
 //         [[ 47.,  62.],
 //          [ 77.,  92.]]]])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot3d_3d)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot3d_3d)
 {
     Shape shape{2, 2, 2};
     auto A = make_shared<op::Parameter>(element::f32, shape);
@@ -524,7 +524,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot3d_3d)
 //        [[ 236.,  293.,  350.,  407.],
 //         [ 272.,  338.,  404.,  470.]]])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot3d_2d)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot3d_2d)
 {
     Shape shape_a{4, 2, 3};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -552,7 +552,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot3d_2d)
                           read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_tensor_arg0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_scalar_tensor_arg0)
 {
     Shape shape_a{};
     Shape shape_b{2, 2, 2};
@@ -575,7 +575,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_tensor_arg0)
                                   read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_tensor_arg1)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_scalar_tensor_arg1)
 {
     Shape shape_a{2, 2, 2};
     Shape shape_b{};
@@ -598,7 +598,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_tensor_arg1)
                                   read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_scalar)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_scalar_scalar)
 {
     Shape shape{};
     auto A = make_shared<op::Parameter>(element::f32, shape);
@@ -619,7 +619,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_scalar_scalar)
     EXPECT_TRUE(test::all_close_f((vector<float>{48}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector_4_3)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_vector_4_3)
 {
     Shape shape_a{4, 3};
     Shape shape_b{3};
@@ -642,7 +642,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector_4_3)
     EXPECT_TRUE(test::all_close_f((vector<float>{110, 272, 434, 596}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_vector)
 {
     Shape shape_a{4, 4};
     Shape shape_b{4};
@@ -666,7 +666,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector)
         test::all_close_f((vector<float>{190, 486, 782, 1078}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector_int64)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_matrix_vector_int64)
 {
     Shape shape_a{4, 4};
     Shape shape_b{4};
@@ -703,7 +703,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_matrix_vector_int64)
 // array([ 2938.,  3016.,  3094.,  3172.,  3250.,  7042.,  7264.,  7486.,
 //         7708.,  7930.])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot_3d_multi_axis)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_3d_multi_axis)
 {
     vector<float> a_data(2 * 3 * 4);
     for (int i = 0; i < 2 * 3 * 4; i++)
@@ -761,7 +761,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dot_3d_multi_axis)
 //          63,  286,  429,  218,   45,   11,   29,  162,   27,  106,  149,
 //         126,   65,   25,   44,    6,   11,  165,  281,   52])
 //
-NGRAPH_TEST(${BACKEND_NAME}, dot_3d_one_axis_arbitrary)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dot_3d_one_axis_arbitrary)
 {
     vector<float> a_data{6,  61, 2, 3, 5, 21, 75, 23, 23, 0, 23, 2,
                          35, 67, 1, 2, 9, 16, 2,  3,  6,  1, 8,  0};

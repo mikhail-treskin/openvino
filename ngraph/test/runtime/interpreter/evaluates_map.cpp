@@ -429,35 +429,6 @@ namespace {
     }
 
     template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::Dot> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::dot<T, T, T>(input[0]->get_data_ptr<T>(),
-                                         input[1]->get_data_ptr<T>(),
-                                         outputs[0]->get_data_ptr<T>(),
-                                         input[0]->get_shape(),
-                                         input[1]->get_shape(),
-                                         outputs[0]->get_shape(),
-                                         op->get_reduction_axes_count());
-        return true;
-    }
-
-    template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::ReplaceSlice> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::replace_slice<T>(input[0]->get_data_ptr<T>(),
-                                         input[1]->get_data_ptr<T>(),
-                                         outputs[0]->get_data_ptr<T>(),
-                                         input[1]->get_shape(),
-                                         op->get_lower_bounds(),
-                                         op->get_upper_bounds(),
-                                         op->get_strides(),
-                                         outputs[0]->get_shape());
-        return true;
-    }
-
-    template<element::Type_t ET>
     bool evaluate(const shared_ptr<op::v0::Gelu> &op, const HostTensorVector &outputs,
                   const HostTensorVector &input) {
         using T = typename element_type_traits<ET>::value_type;
@@ -494,21 +465,6 @@ namespace {
                 return false;
         }
 #undef REF_CALL
-        return true;
-    }
-
-    template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::BatchNormInference> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::batch_norm_inference(op->get_eps_value(),
-                                                 input[0]->get_data_ptr<T>(),
-                                                 input[1]->get_data_ptr<T>(),
-                                                 input[2]->get_data_ptr<T>(),
-                                                 input[3]->get_data_ptr<T>(),
-                                                 input[4]->get_data_ptr<T>(),
-                                                 outputs[0]->get_data_ptr<T>(),
-                                                 op->get_input_shape(2));
         return true;
     }
 
@@ -613,27 +569,17 @@ namespace {
         }
 #undef REF_CALL
     }
-    //TODO: Rewrite to v1
+
+//    TODO: Rewrite to v1
     template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::OneHot> &op, const HostTensorVector &outputs,
+    bool evaluate(const shared_ptr<op::v1::OneHot> &op, const HostTensorVector &outputs,
                   const HostTensorVector &inputs) {
         using T = typename element_type_traits<ET>::value_type;
         runtime::reference::one_hot<T>(inputs[0]->get_data_ptr<ET>(),
                                        outputs[0]->get_data_ptr<ET>(),
                                        inputs[0]->get_shape(),
                                        outputs[0]->get_shape(),
-                                       op->get_one_hot_axis());
-        return true;
-    }
-
-    template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::Any> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &inputs) {
-        runtime::reference::any(inputs[0]->get_data_ptr<char>(),
-                               outputs[0]->get_data_ptr<char>(),
-                               inputs[0]->get_shape(),
-                               outputs[0]->get_shape(),
-                               op->get_reduction_axes());
+                                       op->get_axis());
         return true;
     }
 
@@ -650,133 +596,23 @@ namespace {
 
     //TODO: Rewrite to v1
     template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::Pad> &op, const HostTensorVector &outputs,
+    bool evaluate(const shared_ptr<op::v1::Pad> &op, const HostTensorVector &outputs,
                   const HostTensorVector &inputs) {
         using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::pad<T>(inputs[0]->get_data_ptr<ET>(),
-                                   inputs[1]->get_data_ptr<ET>(),
-                                   outputs[0]->get_data_ptr<ET>(),
-                                   inputs[0]->get_shape(),
+        runtime::reference::pad(inputs[0]->get_data_ptr<char>(),
+                                   inputs[1]->get_data_ptr<char>(),
+                                   outputs[0]->get_data_ptr<char>(),
+                                   shape_size(inputs[0]->get_shape()),
+                                   inputs[1]->get_shape(),
                                    outputs[0]->get_shape(),
-                                   op->get_padding_below(),
-                                   op->get_padding_above(),
+                                   op->get_pads_end(),
+                                   op->get_pads_begin(),
                                    op->get_pad_mode());
         return true;
     }
 
 
-template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::Dequantize> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
 
-#define REF_CALL(U) \
-        runtime::reference::dequantize<T, typename element_type_traits<U>::value_type>(\
-            input[0]->get_data_ptr<T>(), \
-            input[1]->get_data_ptr<U>(), \
-            input[2]->get_data_ptr<T>(), \
-            outputs[0]->get_data_ptr<U>(), \
-            input[0]->get_shape(), \
-            input[1]->get_shape(), \
-            op->get_axes());
-
-
-        switch (input[0]->get_element_type()) {
-            case element::Type_t::boolean:
-                REF_CALL(element::Type_t::boolean);
-            case element::Type_t::i8:
-                REF_CALL(element::Type_t::i8);
-            case element::Type_t::i16:
-                REF_CALL(element::Type_t::i16);
-            case element::Type_t::i32:
-                REF_CALL(element::Type_t::i32);
-            case element::Type_t::i64:
-                REF_CALL(element::Type_t::i64);
-            case element::Type_t::u8:
-                REF_CALL(element::Type_t::u8);
-            case element::Type_t::u16:
-                REF_CALL(element::Type_t::u16);
-            case element::Type_t::u32:
-                REF_CALL(element::Type_t::u32);
-            case element::Type_t::u64:
-                REF_CALL(element::Type_t::u64);
-            case element::Type_t::f16:
-                REF_CALL(element::Type_t::f16);
-            case element::Type_t::f32:
-                REF_CALL(element::Type_t::f32);
-            case element::Type_t::f64:
-                REF_CALL(element::Type_t::f64);
-            default:
-                return false;
-        }
-#undef REF_CALL
-}
-
-    template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::Quantize> &op, const HostTensorVector &outputs,
-                 const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-
-#define REF_CALL(U) \
-        runtime::reference::quantize<T, typename element_type_traits<U>::value_type>(\
-            input[0]->get_data_ptr<T>(), \
-            input[1]->get_data_ptr<T>(), \
-            input[2]->get_data_ptr<U>(), \
-            outputs[0]->get_data_ptr<U>(), \
-            input[0]->get_shape(), \
-            input[1]->get_shape(), \
-            op->get_axes(), \
-            op->get_round_mode());
-
-
-        switch (input[0]->get_element_type()) {
-            case element::Type_t::boolean:
-                REF_CALL(element::Type_t::boolean);
-            case element::Type_t::bf16:
-                REF_CALL(element::Type_t::bf16);
-            case element::Type_t::i8:
-                REF_CALL(element::Type_t::i8);
-            case element::Type_t::i16:
-                REF_CALL(element::Type_t::i16);
-            case element::Type_t::i32:
-                REF_CALL(element::Type_t::i32);
-            case element::Type_t::i64:
-                REF_CALL(element::Type_t::i64);
-            case element::Type_t::u8:
-                REF_CALL(element::Type_t::u8);
-            case element::Type_t::u16:
-                REF_CALL(element::Type_t::u16);
-            case element::Type_t::u32:
-                REF_CALL(element::Type_t::u32);
-            case element::Type_t::u64:
-                REF_CALL(element::Type_t::u64);
-            case element::Type_t::f16:
-                REF_CALL(element::Type_t::f16);
-            case element::Type_t::f32:
-                REF_CALL(element::Type_t::f32);
-            case element::Type_t::f64:
-                REF_CALL(element::Type_t::f64);
-            default:
-                return false;
-        }
-#undef REF_CALL
-    }
-
-    template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v0::GatherND> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-        using U = typename element_type_traits<element::Type_t::f32>::value_type;
-
-        runtime::reference::gather_nd<T,U>(
-                input[0]->get_data_ptr<T>(),
-                input[1]->get_data_ptr<U>(),
-                outputs[0]->get_data_ptr<T>(),
-                input[0]->get_shape(),
-                input[1]->get_shape(),
-                outputs[0]->get_shape());
-        return true;
-    }
 
     template<typename T>
     bool evaluate_node(std::shared_ptr<Node> node, const HostTensorVector &outputs, const HostTensorVector &inputs) {

@@ -25,13 +25,13 @@
 #include "util/test_tools.hpp"
 
 NGRAPH_SUPPRESS_DEPRECATED_START
-
+// TODO: ReplaceSlice op is deprecated. Remove these tests
 using namespace std;
 using namespace ngraph;
 
 static string s_manifest = "${MANIFEST}";
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_scalar)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_scalar)
 {
     Shape shape_a{};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -56,7 +56,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_scalar)
         (vector<float>{808}), read_vector<float>(result), MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_matrix_inplace)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_matrix_inplace)
 {
     Shape shape_a{4, 4};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -86,7 +86,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_matrix_inplace)
         MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_matrix)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_matrix)
 {
     Shape shape_a{4, 4};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -113,7 +113,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_matrix)
         MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_vector)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_vector)
 {
     Shape shape_a{16};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -140,7 +140,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_vector)
         MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_3d)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_3d)
 {
     Shape shape_a{4, 4, 4};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -178,7 +178,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_3d)
         read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_3d_strided)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_3d_strided)
 {
     Shape shape_a{4, 4, 4};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);
@@ -218,7 +218,7 @@ NGRAPH_TEST(${BACKEND_NAME}, replace_slice_3d_strided)
         MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, replace_slice_3d_strided_different_strides)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_replace_slice_3d_strided_different_strides)
 {
     Shape shape_a{4, 4, 4};
     auto A = make_shared<op::Parameter>(element::f32, shape_a);

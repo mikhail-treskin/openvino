@@ -32,7 +32,7 @@ using namespace ngraph;
 
 static string s_manifest = "${MANIFEST}";
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -69,7 +69,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -104,7 +104,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize)
                                   MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -141,7 +141,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_zero_offset)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -176,7 +176,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_zero_offset)
                                   MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_axes)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_axes)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape{4};
@@ -213,7 +213,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_axes)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_axes)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_axes)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape{4};
@@ -248,7 +248,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_axes)
                                   MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_int8)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_int8)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -285,7 +285,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_int8)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_int8)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_int8)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -321,7 +321,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_int8)
                           MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_int8_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_int8_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -358,7 +358,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_int8_zero_offset)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_int8_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_int8_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -394,7 +394,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_int8_zero_offset)
                           MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_int32)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_int32)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -431,7 +431,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_int32)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_int32)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_int32)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -467,7 +467,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_int32)
                           MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_int32_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_int32_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -504,7 +504,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_int32_zero_offset)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_int32_zero_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_int32_zero_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -540,7 +540,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_int32_zero_offset)
                           MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_uint8)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_clamp_uint8)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -575,7 +575,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_uint8)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_int8)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_clamp_int8)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -611,7 +611,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_int8)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_int32)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_clamp_int32)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -648,7 +648,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_clamp_int32)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_ZERO)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_NEAREST_TOWARD_ZERO)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -683,7 +683,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_ZERO)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_INFINITY)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_NEAREST_TOWARD_INFINITY)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -718,7 +718,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_INFINITY)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_UPWARD)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_NEAREST_UPWARD)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -753,7 +753,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_UPWARD)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_DOWNWARD)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_NEAREST_DOWNWARD)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -788,7 +788,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_DOWNWARD)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_EVEN)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_NEAREST_TOWARD_EVEN)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -823,7 +823,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_NEAREST_TOWARD_EVEN)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_TOWARD_INFINITY)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_TOWARD_INFINITY)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -863,7 +863,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_TOWARD_INFINITY)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_TOWARD_ZERO)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_TOWARD_ZERO)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -903,7 +903,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_TOWARD_ZERO)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_UP)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_UP)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -938,7 +938,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_UP)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_DOWN)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_ROUND_DOWN)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape;
@@ -973,7 +973,7 @@ NGRAPH_TEST(${BACKEND_NAME}, quantize_ROUND_DOWN)
               read_vector<output_c_type>(y));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, dequantize_dynamic_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_dequantize_dynamic_offset)
 {
     Shape input_shape{4};
     Shape scale_offset_shape = {};
@@ -1008,7 +1008,7 @@ NGRAPH_TEST(${BACKEND_NAME}, dequantize_dynamic_offset)
                                   MIN_FLOAT_TOLERANCE_BITS));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, quantize_dynamic_offset)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_quantize_dynamic_offset)
 {
     Shape input_shape{4, 3};
     Shape scale_offset_shape = {};

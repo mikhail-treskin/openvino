@@ -39,7 +39,7 @@ using namespace ngraph;
 static string s_manifest = "${MANIFEST}";
 
 // Trivial case with no reduced axes.
-NGRAPH_TEST(${BACKEND_NAME}, any_trivial)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_trivial)
 {
     Shape shape{2, 2};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -57,7 +57,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_trivial)
     EXPECT_EQ((vector<char>{0, 1, 1, 0}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2_to_scalar_true)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2_to_scalar_true)
 {
     Shape shape{2, 2};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -75,7 +75,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2_to_scalar_true)
     EXPECT_EQ((vector<char>{1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2_to_scalar_false)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2_to_scalar_false)
 {
     Shape shape{2, 2};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -93,7 +93,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2_to_scalar_false)
     EXPECT_EQ((vector<char>{0}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x0_to_scalar)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x0_to_scalar)
 {
     Shape shape{2, 0};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -110,7 +110,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x0_to_scalar)
     EXPECT_EQ((vector<char>{0}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x3_eliminate_col_dim)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x3_eliminate_col_dim)
 {
     Shape shape{2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -128,7 +128,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x3_eliminate_col_dim)
     EXPECT_EQ((vector<char>{1, 0}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x3_eliminate_row_dim)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x3_eliminate_row_dim)
 {
     Shape shape{2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -146,7 +146,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x3_eliminate_row_dim)
     EXPECT_EQ((vector<char>{0, 1, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_0)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dim_0)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -165,7 +165,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_0)
     EXPECT_EQ((vector<char>{1, 1, 1, 0, 0, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_1)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dim_1)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -184,7 +184,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_1)
     EXPECT_EQ((vector<char>{0, 1, 1, 1, 0, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dim_2)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -203,7 +203,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dim_2)
     EXPECT_EQ((vector<char>{1, 1, 1, 0}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_0_1)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dims_0_1)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -222,7 +222,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_0_1)
     EXPECT_EQ((vector<char>{1, 1, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_0_2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dims_0_2)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -241,7 +241,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_0_2)
     EXPECT_EQ((vector<char>{1, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_1_2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dims_1_2)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
@@ -260,7 +260,7 @@ NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_1_2)
     EXPECT_EQ((vector<char>{1, 1}), read_vector<char>(result));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, any_2x2x3_eliminate_dims_0_1_2)
+NGRAPH_TEST(${BACKEND_NAME}, DISABLED_any_2x2x3_eliminate_dims_0_1_2)
 {
     Shape shape{2, 2, 3};
     auto A = make_shared<op::Parameter>(element::boolean, shape);
