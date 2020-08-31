@@ -22,14 +22,18 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Less instead of it.") NGRAPH_API Less
+                : public util::BinaryElementwiseComparison
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise less-than operation.
             class NGRAPH_API Less : public util::BinaryElementwiseComparison
             {
             public:
-                static constexpr NodeTypeInfo type_info{"Less", 1};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
+                NGRAPH_RTTI_DECLARATION;
                 /// \brief Constructs a less-than operation.
                 Less()
                     : util::BinaryElementwiseComparison(AutoBroadcastSpec::NUMPY)
@@ -53,5 +57,6 @@ namespace ngraph
         } // namespace v1
 
         using v1::Less;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

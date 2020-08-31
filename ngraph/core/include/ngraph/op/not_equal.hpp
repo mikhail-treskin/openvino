@@ -22,14 +22,18 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::NotEqual instead of it.") NGRAPH_API NotEqual
+                : public util::BinaryElementwiseComparison
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise not-equal operation.
             class NGRAPH_API NotEqual : public util::BinaryElementwiseComparison
             {
             public:
-                static constexpr NodeTypeInfo type_info{"NotEqual", 1};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
+                NGRAPH_RTTI_DECLARATION;
                 /// \brief Constructs a not-equal operation.
                 NotEqual()
                     : util::BinaryElementwiseComparison(AutoBroadcastSpec::NUMPY)
@@ -54,5 +58,6 @@ namespace ngraph
         } // namespace v1
 
         using v1::NotEqual;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

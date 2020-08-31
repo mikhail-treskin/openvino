@@ -22,6 +22,11 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Subtract instead of it.") NGRAPH_API Subtract
+                : public util::BinaryElementwiseArithmetic
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise subtraction operation.
@@ -53,8 +58,10 @@ namespace ngraph
         } // namespace v1
 
         using v1::Subtract;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     } // namespace op
 
+    NGRAPH_DEPRECATED("This operator was deprecated and will be removed with v0 operation.")
     NGRAPH_API
     std::shared_ptr<ngraph::Node> operator-(const Output<ngraph::Node> arg0,
                                             const Output<ngraph::Node> arg1);

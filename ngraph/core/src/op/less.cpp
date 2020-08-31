@@ -15,9 +15,11 @@
 //*****************************************************************************
 
 #include "ngraph/op/less.hpp"
-#include "ngraph/itt.hpp"
+#include "itt.hpp"
 #include "ngraph/runtime/host_tensor.hpp"
 #include "ngraph/runtime/reference/less.hpp"
+
+NGRAPH_SUPPRESS_DEPRECATED_START
 
 using namespace std;
 using namespace ngraph;
@@ -70,7 +72,7 @@ namespace
 
 // ----------------------------- v1 --------------------------------------------
 
-constexpr NodeTypeInfo op::v1::Less::type_info;
+NGRAPH_RTTI_DEFINITION(op::v1::Less, "Less", 1);
 
 op::v1::Less::Less(const Output<Node>& arg0,
                    const Output<Node>& arg1,

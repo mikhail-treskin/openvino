@@ -38,13 +38,14 @@
 #include <ngraph/runtime/reference/replace_slice.hpp>
 #include <ngraph/runtime/reference/gather_nd.hpp>
 
-#include "reference/detection_output.hpp"
-#include "reference/scatter_nd_update.hpp"
-#include "reference/scatter_update.hpp"
+#include "ngraph/runtime/reference/detection_output.hpp"
+#include "ngraph/runtime/reference/scatter_nd_update.hpp"
 #include "reference/gelu.hpp"
 #include "reference/hard_sigmoid.hpp"
 #include "reference/elu.hpp"
 #include "reference/selu.hpp"
+#include "ngraph/runtime/reference/ctc_loss.hpp"
+#include "ngraph/runtime/reference/batch_norm.hpp"
 
 using namespace ngraph;
 using namespace std;
@@ -348,42 +349,6 @@ namespace {
     }
 
     template<element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v3::ScatterUpdate> &op, const HostTensorVector &outputs,
-                  const HostTensorVector &input) {
-        using T = typename element_type_traits<ET>::value_type;
-        if (op->get_input_element_type(3) != element::i64)
-            throw ngraph_error(
-                    "ScatterNDUpdate layer support only i64 'axis' input precision!");
-
-        auto idxType = op->get_input_element_type(1);
-        if (idxType == element::i32) {
-            runtime::reference::scatterUpdate<T, int32_t, int64_t>(
-                    input[0]->get_data_ptr<const T>(),
-                    input[1]->get_data_ptr<const int32_t>(),
-                    input[2]->get_data_ptr<const T>(),
-                    input[3]->get_data_ptr<const int64_t>(),
-                    outputs[0]->get_data_ptr<T>(),
-                    op->get_input_shape(0),
-                    op->get_input_shape(1),
-                    op->get_input_shape(2));
-        } else if (idxType == element::i64) {
-            runtime::reference::scatterUpdate<T, int64_t, int64_t>(
-                    input[0]->get_data_ptr<const T>(),
-                    input[1]->get_data_ptr<const int64_t>(),
-                    input[2]->get_data_ptr<const T>(),
-                    input[3]->get_data_ptr<const int64_t>(),
-                    outputs[0]->get_data_ptr<T>(),
-                    op->get_input_shape(0),
-                    op->get_input_shape(1),
-                    op->get_input_shape(2));
-        } else {
-            throw ngraph_error(
-                    "ScatterUpdate layer support only i32 and i64 'indices' input precision!");
-        }
-        return true;
-    }
-
-    template<element::Type_t ET>
     bool evaluate(const shared_ptr<op::v1::Select> &op, const HostTensorVector &outputs,
                   const HostTensorVector &input) {
         using T = typename element_type_traits<ET>::value_type;
@@ -499,6 +464,51 @@ namespace {
         runtime::reference::gelu<T>(input[0]->get_data_ptr<T>(),
                                     outputs[0]->get_data_ptr<T>(),
                                     shape_size(input[0]->get_shape()));
+        return true;
+    }
+
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v4::CTCLoss> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+#define REF_CALL(elType) \
+        runtime::reference::CTCLoss<T, typename element_type_traits<elType>::value_type>( \
+                                       input[0]->get_data_ptr<T>(), \
+                                       input[0]->get_shape(), \
+                                       input[1]->get_data_ptr<elType>(), \
+                                       input[2]->get_data_ptr<elType>(), \
+                                       input[3]->get_data_ptr<elType>(), \
+                                       input[4]->get_data_ptr<elType>(), \
+                                       op->get_preprocess_collapse_repeated(), \
+                                       op->get_ctc_merge_repeated(), \
+                                       op->get_unique(), \
+                                       outputs[0]->get_data_ptr<T>()); \
+        break;
+
+        switch (input[1]->get_element_type()) {
+            case element::Type_t::i32:
+            REF_CALL(element::Type_t::i32);
+            case element::Type_t::i64:
+            REF_CALL(element::Type_t::i64);
+            default:
+                return false;
+        }
+#undef REF_CALL
+        return true;
+    }
+
+    template<element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v0::BatchNormInference> &op, const HostTensorVector &outputs,
+                  const HostTensorVector &input) {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::batch_norm_inference(op->get_eps_value(),
+                                                 input[0]->get_data_ptr<T>(),
+                                                 input[1]->get_data_ptr<T>(),
+                                                 input[2]->get_data_ptr<T>(),
+                                                 input[3]->get_data_ptr<T>(),
+                                                 input[4]->get_data_ptr<T>(),
+                                                 outputs[0]->get_data_ptr<T>(),
+                                                 op->get_input_shape(2));
         return true;
     }
 

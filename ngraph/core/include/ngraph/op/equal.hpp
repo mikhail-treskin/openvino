@@ -22,6 +22,11 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Equal instead of it.") NGRAPH_API Equal
+                : public util::BinaryElementwiseComparison
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             // clang-format off
@@ -44,8 +49,7 @@ namespace ngraph
             class NGRAPH_API Equal : public util::BinaryElementwiseComparison
             {
             public:
-                static constexpr NodeTypeInfo type_info{"Equal", 1};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
+                NGRAPH_RTTI_DECLARATION;
                 /// \brief Constructs an equal operation.
                 Equal()
                     : util::BinaryElementwiseComparison(AutoBroadcastSpec::NUMPY)
@@ -70,5 +74,6 @@ namespace ngraph
         } // namespace v1
 
         using v1::Equal;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

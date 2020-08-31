@@ -22,6 +22,10 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Select instead of it.") NGRAPH_API Select : public Op
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             // clang-format off
@@ -45,8 +49,7 @@ namespace ngraph
             class NGRAPH_API Select : public Op
             {
             public:
-                static constexpr NodeTypeInfo type_info{"Select", 1};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
+                NGRAPH_RTTI_DECLARATION;
                 /// \brief Constructs a selection operation.
                 Select()
                     : m_auto_broadcast(AutoBroadcastSpec(AutoBroadcastType::NUMPY))
@@ -83,5 +86,6 @@ namespace ngraph
             };
         }
         using v1::Select;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

@@ -22,14 +22,18 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::GreaterEqual instead of it.") NGRAPH_API GreaterEq
+                : public util::BinaryElementwiseComparison
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise greater-than-or-equal operation.
             class NGRAPH_API GreaterEqual : public util::BinaryElementwiseComparison
             {
             public:
-                static constexpr NodeTypeInfo type_info{"GreaterEqual", 1};
-                const NodeTypeInfo& get_type_info() const override { return type_info; }
+                NGRAPH_RTTI_DECLARATION;
                 /// \brief Constructs a greater-than-or-equal operation.
                 GreaterEqual()
                     : util::BinaryElementwiseComparison(AutoBroadcastSpec::NUMPY)
@@ -50,9 +54,9 @@ namespace ngraph
                 bool evaluate(const HostTensorVector& outputs,
                               const HostTensorVector& inputs) const override;
             };
-
         } // namespace v1
 
         using v1::GreaterEqual;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

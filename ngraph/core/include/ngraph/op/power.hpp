@@ -22,6 +22,11 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Power instead of it.") NGRAPH_API Power
+                : public util::BinaryElementwiseArithmetic
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             // clang-format off
@@ -68,5 +73,6 @@ namespace ngraph
         } // namespace v1
 
         using v1::Power;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }

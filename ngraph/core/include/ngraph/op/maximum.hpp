@@ -22,6 +22,11 @@ namespace ngraph
 {
     namespace op
     {
+                "This operation is deprecated and will be removed soon. "
+                "Use v1::Maximum instead of it.") NGRAPH_API Maximum
+                : public util::BinaryElementwiseArithmetic
+                NGRAPH_SUPPRESS_DEPRECATED_START
+                NGRAPH_SUPPRESS_DEPRECATED_END
         namespace v1
         {
             /// \brief Elementwise maximum operation.
@@ -55,5 +60,6 @@ namespace ngraph
         } // namespace v1
 
         using v1::Maximum;
+        NGRAPH_SUPPRESS_DEPRECATED_END
     }
 }
