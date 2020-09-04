@@ -47,18 +47,18 @@ NGRAPH_TEST(${BACKEND_NAME}, convert_int32_float32)
     EXPECT_TRUE(test::all_close_f((vector<float>{281, 2, 3, 4}), read_vector<float>(result)));
 }
 
-NGRAPH_TEST(${BACKEND_NAME}, convert_uint32_float64)
+NGRAPH_TEST(${BACKEND_NAME}, convert_uint16_float32)
 {
     Shape shape{2, 2};
-    auto A = make_shared<op::Parameter>(element::u32, shape);
-    auto f = make_shared<Function>(make_shared<op::Convert>(A, element::f64), ParameterVector{A});
+    auto A = make_shared<op::Parameter>(element::u16, shape);
+    auto f = make_shared<Function>(make_shared<op::Convert>(A, element::f32), ParameterVector{A});
 
     auto backend = runtime::Backend::create("${BACKEND_NAME}");
 
     // Create some tensors for input/output
-    auto a = backend->create_tensor(element::u32, shape);
-    copy_data(a, vector<uint32_t>{1, 2, 3, 4});
-    auto result = backend->create_tensor(element::f64, shape);
+    auto a = backend->create_tensor(element::u16, shape);
+    copy_data(a, vector<uint16_t>{1, 2, 3, 4});
+    auto result = backend->create_tensor(element::f32, shape);
 
     auto handle = backend->compile(f);
     handle->call_with_validate({result}, {a});

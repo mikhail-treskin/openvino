@@ -33,10 +33,10 @@ namespace ngraph
         namespace reference
         {
             template <typename T, typename U>
-            void hard_sigmoid(const T* arg,
-                              T* out,
-                              Shape arg_size,
-                              const U* axes_order = nullptr)
+            void transpose(const T* arg,
+                           T* out,
+                           Shape arg_size,
+                           const U* axes_order = nullptr)
             {
                 if (axes_order == nullptr) {
                     std::vector<size_t> range_vector(arg_size.size());

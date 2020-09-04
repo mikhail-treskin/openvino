@@ -250,7 +250,6 @@ set(MULTI_TEST_SRC
     backend/acosh.in.cpp
     backend/add.in.cpp
     backend/aliased_output.in.cpp
-    backend/any.in.cpp
     backend/api.in.cpp
     backend/asin.in.cpp
     backend/asinh.in.cpp
@@ -270,7 +269,6 @@ set(MULTI_TEST_SRC
     backend/cosh.in.cpp
     backend/cum_sum.in.cpp
     backend/divide.in.cpp
-    backend/dot.in.cpp
     backend/dyn_reshape.in.cpp
     backend/strided_slice.in.cpp
     backend/dynamic.in.cpp
@@ -315,7 +313,6 @@ set(MULTI_TEST_SRC
     backend/reduce_prod.in.cpp
     backend/reduce_sum.in.cpp
     backend/relu.in.cpp
-    backend/replace_slice.in.cpp
     backend/reshape.in.cpp
     backend/reverse_sequence.in.cpp
     backend/reverse.in.cpp

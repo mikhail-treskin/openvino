@@ -74,8 +74,6 @@ public:
     template <element::Type_t ET>
     typename element_type_traits<ET>::value_type* get_data_ptr()
     {
-        // TODO: iefode: Remove this line
-        std::cout << get_element_type() << " " << ET << std::endl;
         NGRAPH_CHECK(ET == get_element_type(), "get_data_ptr() called for incorrect element type.");
         return static_cast<typename element_type_traits<ET>::value_type*>(get_data_ptr());
     }

@@ -34,7 +34,6 @@
 #include "ngraph/check.hpp"
 #include "ngraph/ngraph.hpp"
 #include "ngraph/op/util/attr_types.hpp"
-#include "op/group_conv.hpp"
 #include "util/all_close.hpp"
 #include "util/all_close_f.hpp"
 #include "util/engine/test_engines.hpp"
