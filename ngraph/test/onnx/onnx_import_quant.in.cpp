@@ -45,6 +45,7 @@ using TestEngine = test::ENGINE_CLASS_NAME(${BACKEND_NAME});
 using Inputs = std::vector<std::vector<float>>;
 using Outputs = std::vector<std::vector<float>>;
 
+// TODO: remove or refactor these disabled tests due to quntize/dequantize ops is deprecated
 NGRAPH_TEST(${BACKEND_NAME}, DISABLED_onnx_model_quantize_linear_const_scale_const_zero_p)
 {
     auto function = onnx_import::import_onnx_model(

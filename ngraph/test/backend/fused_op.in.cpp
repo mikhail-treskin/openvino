@@ -1161,7 +1161,7 @@ NGRAPH_TEST(${BACKEND_NAME}, mvn_mean_variance_normalization_split_channels)
     test_case.run();
 }
 
-// TODO: enable GRN tests after grn operation reference implementation
+// TODO: enable (RNN|LSTM|GRU)Cell tests after grn operation reference implementation
 NGRAPH_TEST(${BACKEND_NAME}, DISABLED_grn_4d)
 {
     const Shape data_shape{1, 2, 3, 4};

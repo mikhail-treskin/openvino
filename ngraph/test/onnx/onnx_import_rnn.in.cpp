@@ -43,6 +43,7 @@ static std::string s_manifest = "${MANIFEST}";
 using TestEngine = test::ENGINE_CLASS_NAME(${BACKEND_NAME});
 
 // ONNX LSTM tests (implemented by nGraph LSTMCell and LSTMSequence)
+// TODO: enable (RNN|LSTM|GRU)Cell tests after grn operation reference implementation
 NGRAPH_TEST(${BACKEND_NAME}, DISABLED_onnx_model_lstm_fwd_with_clip)
 {
     auto function = onnx_import::import_onnx_model(

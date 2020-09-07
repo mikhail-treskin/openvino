@@ -38,7 +38,7 @@ using namespace ngraph;
 
 static string s_manifest = "${MANIFEST}";
 
-// TODO: rewrite ref & tests to v1::OneHot op
+// TODO: Issue: 37522
 NGRAPH_TEST(${BACKEND_NAME}, DISABLED_one_hot_scalar_2_in_3)
 {
     Shape shape_a{};
