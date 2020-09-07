@@ -262,69 +262,36 @@ namespace
         return op_cast_binary_elementwise_node<op::v0::Xor, op::v1::LogicalXor>(node);
     }
 
-//    shared_ptr<Node> op_cast(shared_ptr<op::v1::OneHot> node)
-//    {
-//        const auto indices = node->input_value(0);
-//        const auto depth = node->input_value(1).get_node();
-//        auto on_value = node->input_value(2);
-//        auto off_value = node->input_value(3);
-//        const auto axis = node->get_axis();
-//
-//        NGRAPH_CHECK(op::is_constant(depth), "depth input must be constant", *node);
-//        const auto output_pshape = node->get_output_partial_shape(0);
-//        NGRAPH_CHECK(output_pshape.is_static(), "output shape must be static", *node);
-//        const auto output_shape = output_pshape.to_shape();
-//
-//        auto one_hot = std::make_shared<ngraph::op::Convert>(
-//            std::make_shared<ngraph::op::OneHot>(indices, output_shape, axis),
-//            on_value.get_element_type());
-//
-//        auto broadcasted_values = builder::numpy_broadcast_outputs({one_hot, on_value, off_value});
-//        on_value = broadcasted_values[1];
-//        off_value = broadcasted_values[2];
-//
-//        auto replacement_node = one_hot * (on_value - off_value) + off_value;
-//
-//        replace_node(node, replacement_node);
-//        return replacement_node;
-//    }
-
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::ReduceMax> node)
+    shared_ptr<Node> op_cast(shared_ptr<op::v1::OneHot> node)
     {
-        auto replacement_node = op_cast_reduction_node<op::v0::Max, op::v1::ReduceMax>(node);
+        const auto indices = node->input_value(0);
+        const auto depth = node->input_value(1).get_node();
+        auto on_value = node->input_value(2);
+        auto off_value = node->input_value(3);
+        const auto axis = node->get_axis();
+
+        NGRAPH_CHECK(op::is_constant(depth), "depth input must be constant", *node);
+        const auto output_pshape = node->get_output_partial_shape(0);
+        NGRAPH_CHECK(output_pshape.is_static(), "output shape must be static", *node);
+        const auto output_shape = output_pshape.to_shape();
+
+        auto one_hot = std::make_shared<ngraph::op::Convert>(
+            std::make_shared<ngraph::op::OneHot>(indices, output_shape, axis),
+            on_value.get_element_type());
+
+        auto broadcasted_values = builder::numpy_broadcast_outputs({one_hot, on_value, off_value});
+        on_value = broadcasted_values[1];
+        off_value = broadcasted_values[2];
+
+        auto replacement_node = one_hot * (on_value - off_value) + off_value;
+
         replace_node(node, replacement_node);
         return replacement_node;
     }
 
-    shared_ptr<Node> op_cast(shared_ptr<op::v1::ReduceMean> node)
+    shared_ptr<Node> op_cast(shared_ptr<op::v1::ReduceMax> node)
     {
-        // ReduceMean = Sum / Count
-        auto sum_node = op_cast_reduction_node<op::v0::Sum, op::v1::ReduceMean>(node);
-
-        // Count = Sum(Constant(1, shape=data.shape))
-        const auto data = node->input_value(0);
-        const auto axes = node->input_value(1);
-        const auto const_node =
-            op::v0::Constant::create(data.get_element_type(), data.get_shape(), {1});
-        std::shared_ptr<Node> count_node = std::make_shared<op::v0::Sum>(const_node, axes);
-
-        // Support keep_dims attribute
-        if (node->get_keep_dims())
-        {
-            // In order to keep the original dimensions we need to reshape the Count node
-            // before we use it in Divide with NUMPY broadcast
-            auto output_shape = count_node->get_shape();
-            auto reshaped_output_shape = output_shape;
-            for (const auto& axis : node->get_reduction_axes())
-            {
-                reshaped_output_shape.insert(reshaped_output_shape.begin() + axis, 1);
-            }
-            count_node = make_shared<op::Reshape>(
-                count_node->output(0), get_default_order(output_shape), reshaped_output_shape);
-        }
-
-        const auto replacement_node =
-            std::make_shared<op::v1::Divide>(sum_node, count_node, op::AutoBroadcastSpec::NUMPY);
+        auto replacement_node = op_cast_reduction_node<op::v0::Max, op::v1::ReduceMax>(node);
         replace_node(node, replacement_node);
         return replacement_node;
     }

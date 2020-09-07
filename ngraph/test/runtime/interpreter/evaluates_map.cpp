@@ -594,7 +594,6 @@ namespace {
         return true;
     }
 
-    //TODO: Rewrite to v1
     template<element::Type_t ET>
     bool evaluate(const shared_ptr<op::v1::Pad> &op, const HostTensorVector &outputs,
                   const HostTensorVector &inputs) {
