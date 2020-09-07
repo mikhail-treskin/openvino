@@ -37,7 +37,6 @@
 #include <ngraph/runtime/reference/dot.hpp>
 #include <ngraph/runtime/reference/replace_slice.hpp>
 #include <ngraph/runtime/reference/gather_nd.hpp>
-
 #include "ngraph/runtime/reference/detection_output.hpp"
 #include "ngraph/runtime/reference/scatter_nd_update.hpp"
 #include "reference/gelu.hpp"
@@ -46,6 +45,8 @@
 #include "reference/selu.hpp"
 #include "ngraph/runtime/reference/ctc_loss.hpp"
 #include "ngraph/runtime/reference/batch_norm.hpp"
+#include "ngraph/runtime/reference/batch_norm.hpp"
+#include "ngraph/runtime/reference/reverse_sequence.hpp"
 
 using namespace ngraph;
 using namespace std;
