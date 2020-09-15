@@ -272,7 +272,7 @@ namespace ngraph
                     }
                 }
 
-                int64_t channel_size = OH * OW;
+                uint64_t channel_size = OH * OW;
                 if (variance.size() == 1)
                 {
                     for (uint64_t i = 0; i < channel_size; ++i)
