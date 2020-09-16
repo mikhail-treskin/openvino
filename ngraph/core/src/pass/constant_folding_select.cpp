@@ -36,7 +36,6 @@ shared_ptr<op::Constant> fold_constant_select(const shared_ptr<op::Constant>& se
 
     if (auto select_v0 = as_type_ptr<op::v1::Select>(select))
     {
-
         runtime::reference::select<T>(selection->get_data_ptr<char>(),
                                       t->get_data_ptr<T>(),
                                       f->get_data_ptr<T>(),

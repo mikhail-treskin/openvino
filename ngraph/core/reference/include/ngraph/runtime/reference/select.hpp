@@ -37,7 +37,8 @@ namespace ngraph
                         size_t arg2_count,
                         size_t arg3_count) // TODO: using char for bool, is this right?
             {
-                for (size_t i = 0; i < arg3_count; i++) {
+                for (size_t i = 0; i < arg3_count; i++)
+                {
                     out[i] = arg0[i % arg0_count] ? arg1[i % arg1_count] : arg2[i % arg2_count];
                 }
             }
