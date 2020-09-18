@@ -402,13 +402,6 @@ namespace
     {
         using T = typename element_type_traits<ET>::value_type;
 
-        auto c1 = std::make_shared<ngraph::op::Constant>(input[0]);
-        auto v1 = c1->cast_vector<T>();
-        auto c2 = std::make_shared<ngraph::op::Constant>(input[1]);
-        auto v2 = c2->cast_vector<T>();
-        auto c3 = std::make_shared<ngraph::op::Constant>(input[2]);
-        auto v3 = c3->cast_vector<T>();
-
         runtime::reference::select<T>(input[0]->get_data_ptr<const char>(),
                                       input[1]->get_data_ptr<const T>(),
                                       input[2]->get_data_ptr<const T>(),
@@ -417,8 +410,6 @@ namespace
                                       op->get_input_shape(1),
                                       op->get_input_shape(2),
                                       op->get_auto_broadcast());
-        auto c4 = std::make_shared<ngraph::op::Constant>(outputs[0]);
-        auto v4 = c4->cast_vector<T>();
         return true;
     }
 
@@ -862,7 +853,7 @@ namespace
                                              inputs[6]->get_shape(),
                                              outputs[0]->get_data_ptr<char>(),
                                              outputs[1]->get_data_ptr<char>(),
-                                             outputs[3]->get_data_ptr<char>(),
+                                             outputs[2]->get_data_ptr<char>(),
                                              op->get_activations()[0],
                                              op->get_activations()[1],
                                              op->get_activations()[2],
