@@ -22,6 +22,7 @@
 #include <ngraph/runtime/reference/convert.hpp>
 #include <ngraph/runtime/reference/dequantize.hpp>
 #include <ngraph/runtime/reference/dot.hpp>
+#include <ngraph/runtime/reference/extract_image_patches.hpp>
 #include <ngraph/runtime/reference/gather_nd.hpp>
 #include <ngraph/runtime/reference/gru_cell.hpp>
 #include <ngraph/runtime/reference/lstm_cell.hpp>
@@ -33,7 +34,6 @@
 #include <ngraph/runtime/reference/reverse_sequence.hpp>
 #include <ngraph/runtime/reference/rnn_cell.hpp>
 #include <ngraph/runtime/reference/select.hpp>
-#include <ngraph/runtime/reference/extract_image_patches.hpp>
 #include <ngraph/runtime/reference/sequences.hpp>
 #include "ngraph/ops.hpp"
 #include "ngraph/runtime/reference/avg_pool.hpp"
@@ -603,7 +603,7 @@ namespace
         outputs[0]->get_data_ptr<T>(),                                                             \
         input[0]->get_shape(),                                                                     \
         op->get_batch_axis(),                                                                      \
-        op->get_sequence_axis(),                                                            \
+        op->get_sequence_axis(),                                                                   \
         input[1]->get_data_ptr<U>());                                                              \
     break;
 
@@ -633,12 +633,11 @@ namespace
                   const HostTensorVector& input)
     {
         using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::extract_image_patches<T>(
-            op,
-            input[0]->get_data_ptr<T>(),
-            outputs[0]->get_data_ptr<T>(),
-            input[0]->get_shape(),
-            outputs[0]->get_shape());
+        runtime::reference::extract_image_patches<T>(op,
+                                                     input[0]->get_data_ptr<T>(),
+                                                     outputs[0]->get_data_ptr<T>(),
+                                                     input[0]->get_shape(),
+                                                     outputs[0]->get_shape());
         return true;
     }
 

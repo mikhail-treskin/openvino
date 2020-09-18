@@ -388,10 +388,9 @@ namespace ngraph
                         Shape arg1_padded_shape = arg1_shape;
                         Shape arg2_padded_shape = arg2_shape;
 
-                        size_t max_shape_size = std::max({
-                            arg0_padded_shape.size(),
-                            arg1_padded_shape.size(),
-                            arg2_padded_shape.size()});
+                        size_t max_shape_size = std::max({arg0_padded_shape.size(),
+                                                          arg1_padded_shape.size(),
+                                                          arg2_padded_shape.size()});
 
                         while (arg0_padded_shape.size() < max_shape_size)
                         {
@@ -445,7 +444,9 @@ namespace ngraph
                                 arg0_squeezed_shape.push_back(arg0_padded_shape[i]);
                             }
 
-                            output_shape.push_back(std::max({arg0_padded_shape[i], arg2_padded_shape[i], arg1_padded_shape[i]}));
+                            output_shape.push_back(std::max({arg0_padded_shape[i],
+                                                             arg2_padded_shape[i],
+                                                             arg1_padded_shape[i]}));
                         }
 
                         CoordinateTransform arg0_transform(arg0_squeezed_shape);

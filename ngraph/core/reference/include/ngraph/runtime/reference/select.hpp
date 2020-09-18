@@ -62,9 +62,7 @@ namespace ngraph
                     arg1_shape,
                     arg2_shape,
                     broadcast_spec,
-                    [](char s, T x, T y) -> T {
-                        return static_cast<T>(s ? x : y);
-                    });
+                    [](char s, T x, T y) -> T { return static_cast<T>(s ? x : y); });
             }
         }
     }
