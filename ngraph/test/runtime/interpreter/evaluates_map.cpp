@@ -33,6 +33,8 @@
 #include <ngraph/runtime/reference/reverse_sequence.hpp>
 #include <ngraph/runtime/reference/rnn_cell.hpp>
 #include <ngraph/runtime/reference/select.hpp>
+#include <ngraph/runtime/reference/extract_image_patches.hpp>
+#include <ngraph/runtime/reference/sequences.hpp>
 #include "ngraph/ops.hpp"
 #include "ngraph/runtime/reference/avg_pool.hpp"
 #include "ngraph/runtime/reference/batch_norm.hpp"
@@ -625,6 +627,21 @@ namespace
         return true;
     }
 
+    template <element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v3::ExtractImagePatches>& op,
+                  const HostTensorVector& outputs,
+                  const HostTensorVector& input)
+    {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::extract_image_patches<T>(
+            op,
+            input[0]->get_data_ptr<T>(),
+            outputs[0]->get_data_ptr<T>(),
+            input[0]->get_shape(),
+            outputs[0]->get_shape());
+        return true;
+    }
+
     template <element::Type_t OUT_ET>
     bool evaluate(const shared_ptr<op::v0::Convert>& op,
                   const HostTensorVector& outputs,
@@ -799,6 +816,63 @@ namespace
     }
 
     template <element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v5::RNNSequence>& op,
+                  const HostTensorVector& outputs,
+                  const HostTensorVector& inputs)
+    {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::rnn_sequence<T>(inputs[0]->get_data_ptr<char>(),
+                                            inputs[0]->get_shape(),
+                                            inputs[1]->get_data_ptr<char>(),
+                                            inputs[1]->get_shape(),
+                                            inputs[2]->get_data_ptr<char>(),
+                                            inputs[2]->get_shape(),
+                                            inputs[3]->get_data_ptr<char>(),
+                                            inputs[3]->get_shape(),
+                                            inputs[4]->get_data_ptr<char>(),
+                                            inputs[4]->get_shape(),
+                                            inputs[5]->get_data_ptr<char>(),
+                                            inputs[5]->get_shape(),
+                                            outputs[0]->get_data_ptr<char>(),
+                                            outputs[1]->get_data_ptr<char>(),
+                                            op->get_activations()[0],
+                                            op->get_clip(),
+                                            op->get_direction());
+        return true;
+    }
+
+    template <element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v5::LSTMSequence>& op,
+                  const HostTensorVector& outputs,
+                  const HostTensorVector& inputs)
+    {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::lstm_sequence<T>(inputs[0]->get_data_ptr<char>(),
+                                             inputs[0]->get_shape(),
+                                             inputs[1]->get_data_ptr<char>(),
+                                             inputs[1]->get_shape(),
+                                             inputs[2]->get_data_ptr<char>(),
+                                             inputs[2]->get_shape(),
+                                             inputs[3]->get_data_ptr<char>(),
+                                             inputs[3]->get_shape(),
+                                             inputs[4]->get_data_ptr<char>(),
+                                             inputs[4]->get_shape(),
+                                             inputs[5]->get_data_ptr<char>(),
+                                             inputs[5]->get_shape(),
+                                             inputs[6]->get_data_ptr<char>(),
+                                             inputs[6]->get_shape(),
+                                             outputs[0]->get_data_ptr<char>(),
+                                             outputs[1]->get_data_ptr<char>(),
+                                             outputs[3]->get_data_ptr<char>(),
+                                             op->get_activations()[0],
+                                             op->get_activations()[1],
+                                             op->get_activations()[2],
+                                             op->get_clip(),
+                                             op->get_direction());
+        return true;
+    }
+
+    template <element::Type_t ET>
     bool evaluate(const shared_ptr<op::v1::Pad>& op,
                   const HostTensorVector& outputs,
                   const HostTensorVector& inputs)
@@ -813,6 +887,34 @@ namespace
                                 op->get_pads_end(),
                                 op->get_pads_begin(),
                                 op->get_pad_mode());
+        return true;
+    }
+
+    template <element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v5::GRUSequence>& op,
+                  const HostTensorVector& outputs,
+                  const HostTensorVector& inputs)
+    {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::gru_sequence<T>(inputs[0]->get_data_ptr<char>(),
+                                            inputs[0]->get_shape(),
+                                            inputs[1]->get_data_ptr<char>(),
+                                            inputs[1]->get_shape(),
+                                            inputs[2]->get_data_ptr<char>(),
+                                            inputs[2]->get_shape(),
+                                            inputs[3]->get_data_ptr<char>(),
+                                            inputs[3]->get_shape(),
+                                            inputs[4]->get_data_ptr<char>(),
+                                            inputs[4]->get_shape(),
+                                            inputs[5]->get_data_ptr<char>(),
+                                            inputs[5]->get_shape(),
+                                            outputs[0]->get_data_ptr<char>(),
+                                            outputs[1]->get_data_ptr<char>(),
+                                            op->get_activations()[0],
+                                            op->get_activations()[1],
+                                            op->get_clip(),
+                                            op->get_direction(),
+                                            op->get_linear_before_reset());
         return true;
     }
 

@@ -445,9 +445,7 @@ namespace ngraph
                                 arg0_squeezed_shape.push_back(arg0_padded_shape[i]);
                             }
 
-                            output_shape.push_back(arg0_padded_shape[i] == 1
-                                                       ? std::max(arg2_padded_shape[i], arg1_padded_shape[i])
-                                                       : arg0_padded_shape[i]);
+                            output_shape.push_back(std::max({arg0_padded_shape[i], arg2_padded_shape[i], arg1_padded_shape[i]}));
                         }
 
                         CoordinateTransform arg0_transform(arg0_squeezed_shape);
