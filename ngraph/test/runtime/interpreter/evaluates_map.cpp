@@ -591,7 +591,7 @@ namespace
         outputs[0]->get_data_ptr<T>(),                                                             \
         input[0]->get_shape(),                                                                     \
         op->get_batch_axis(),                                                                      \
-        op->get_origin_sequence_axis(),                                                            \
+        op->get_sequence_axis(),                                                            \
         input[1]->get_data_ptr<U>());                                                              \
     break;
 
