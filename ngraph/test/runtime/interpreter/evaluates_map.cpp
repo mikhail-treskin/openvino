@@ -863,24 +863,6 @@ namespace
     }
 
     template <element::Type_t ET>
-    bool evaluate(const shared_ptr<op::v1::Pad>& op,
-                  const HostTensorVector& outputs,
-                  const HostTensorVector& inputs)
-    {
-        using T = typename element_type_traits<ET>::value_type;
-        runtime::reference::pad(inputs[0]->get_data_ptr<char>(),
-                                inputs[1]->get_data_ptr<char>(),
-                                outputs[0]->get_data_ptr<char>(),
-                                shape_size(inputs[0]->get_shape()),
-                                inputs[1]->get_shape(),
-                                outputs[0]->get_shape(),
-                                op->get_pads_end(),
-                                op->get_pads_begin(),
-                                op->get_pad_mode());
-        return true;
-    }
-
-    template <element::Type_t ET>
     bool evaluate(const shared_ptr<op::v5::GRUSequence>& op,
                   const HostTensorVector& outputs,
                   const HostTensorVector& inputs)
@@ -905,6 +887,24 @@ namespace
                                             op->get_clip(),
                                             op->get_direction(),
                                             op->get_linear_before_reset());
+        return true;
+    }
+
+    template <element::Type_t ET>
+    bool evaluate(const shared_ptr<op::v1::Pad>& op,
+                  const HostTensorVector& outputs,
+                  const HostTensorVector& inputs)
+    {
+        using T = typename element_type_traits<ET>::value_type;
+        runtime::reference::pad(inputs[0]->get_data_ptr<char>(),
+                                inputs[1]->get_data_ptr<char>(),
+                                outputs[0]->get_data_ptr<char>(),
+                                shape_size(inputs[0]->get_shape()),
+                                inputs[1]->get_shape(),
+                                outputs[0]->get_shape(),
+                                op->get_pads_end(),
+                                op->get_pads_begin(),
+                                op->get_pad_mode());
         return true;
     }
 
