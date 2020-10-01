@@ -1896,7 +1896,6 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_sign)
     test_case.run();
 }
 
-// TODO: Issue: 37522
 NGRAPH_TEST(${BACKEND_NAME}, onnx_model_one_hot_with_axis)
 {
     auto function = onnx_import::import_onnx_model(
