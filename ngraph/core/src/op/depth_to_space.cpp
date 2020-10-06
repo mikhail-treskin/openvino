@@ -180,23 +180,24 @@ void op::DepthToSpace::validate_and_infer_types() {
 
         NODE_VALIDATION_CHECK(
                 this,
-                (data_shape.size() >= 2),
-                "The data tensor with rank lower than 2 is not supported (data rank: ",
+                !(data_shape.size() < 3),
+                "The input tensor with rank lower than 3 is not supported (input rank: ",
                 data_shape.size(),
                 ")");
 
+        auto divider = std::pow(m_blocksize, data_shape.size() - 2);
+        NODE_VALIDATION_CHECK(
+                this,
+                !(data_shape[1] % m_blocksize),
+                "DepthToSpace: The input data's 'channels' axis size: ",
+                data_shape[1],
+                " must be a equivalent to 'block_size'^'spatial_dims': ",
+                divider);
+
         auto out_shape = data_shape;
-        for (size_t i = 0; i < out_shape.size(); i++) {
-            switch (i) {
-                case 0:
-                    break;
-                case 1:
-                    out_shape[i] /= (std::pow(m_blocksize, out_shape.size() - 2));
-                    break;
-                default:
-                    out_shape[i] *= m_blocksize;
-                    break;
-            }
+        out_shape[1] /= divider;
+        for (size_t i = 2; i < out_shape.size(); i++) {
+            out_shape[i] *= m_blocksize;
         }
 
         set_output_size(1);
