@@ -33,7 +33,7 @@ constexpr NodeTypeInfo op::ShuffleChannels::type_info;
 op::ShuffleChannels::ShuffleChannels(const Output<Node>& data,
                                      const int64_t axis,
                                      const int64_t group)
-    : FusedOp({data})
+    : Op({data})
     , m_axis(axis)
     , m_group{group}
 {
@@ -66,8 +66,9 @@ size_t op::ShuffleChannels::get_zero_based_axis() const
     }
 }
 
-void op::ShuffleChannels::pre_validate_and_infer_types()
+void op::ShuffleChannels::validate_and_infer_types()
 {
+    const auto& data_type = get_input_element_type(0);
     if (get_input_partial_shape(0).is_static())
     {
         const auto shape = get_input_shape(0);
@@ -89,6 +90,12 @@ void op::ShuffleChannels::pre_validate_and_infer_types()
             this,
             channel_dim_size % m_group == 0,
             "The channel dimension size has to be a multiple of the groups parameter value.");
+        set_output_size(1);
+        set_output_type(0, data_type, shape);
+    }
+    else
+    {
+        set_output_type(0, data_type, PartialShape::dynamic());
     }
 }
 
