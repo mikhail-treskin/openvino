@@ -175,7 +175,8 @@ bool op::ShuffleChannels::evaluate(const HostTensorVector& outputs,
     }
     size_t data_size = shape_size(data_shape) * elem_size;
 
-    // first reshape from data_shape to reshaped_out_shape is skipped since it doesn't affect out data
+    // first reshape from data_shape to reshaped_out_shape is skipped since it doesn't affect out
+    // data
 
     Shape transpose_axes_order = {0, 2, 1, 3};
     Shape transposed_shape(transpose_axes_order.size());
@@ -186,12 +187,8 @@ bool op::ShuffleChannels::evaluate(const HostTensorVector& outputs,
     }
     auto axis_vector = AxisVector{begin(transpose_axes_order), end(transpose_axes_order)};
     std::vector<char> transposed(data_size);
-    runtime::opt_kernel::reshape(arg,
-                                 out,
-                                 reshaped_out_shape,
-                                 axis_vector,
-                                 transposed_shape,
-                                 elem_size);
+    runtime::opt_kernel::reshape(
+        arg, out, reshaped_out_shape, axis_vector, transposed_shape, elem_size);
 
     // last reshape from transposed_shape to data_shape is skipped since it doesn't affect out data
     return true;
