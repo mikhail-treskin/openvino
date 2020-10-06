@@ -17,6 +17,8 @@
 #include <cstddef>
 #include <memory>
 #include <numeric>
+#include <ngraph/op/constant.hpp>
+#include <ngraph/ops.hpp>
 
 #include "depth_to_space.hpp"
 #include "ngraph/builder/reshape.hpp"
@@ -35,7 +37,7 @@ constexpr NodeTypeInfo op::DepthToSpace::type_info;
 op::DepthToSpace::DepthToSpace(const Output<Node>& data,
                                const DepthToSpaceMode& mode,
                                const size_t block_size)
-    : FusedOp({data})
+    : Op({data})
     , m_blocksize(block_size)
     , m_mode(mode)
 {
@@ -163,6 +165,47 @@ shared_ptr<Node> op::DepthToSpace::clone_with_new_inputs(const OutputVector& new
         throw ngraph_error("Incorrect number of new arguments");
     }
     return make_shared<DepthToSpace>(new_args.at(0), m_mode, m_blocksize);
+}
+
+void op::DepthToSpace::validate_and_infer_types() {
+    PartialShape data_pshape = get_input_partial_shape(0);
+
+    const auto& data_type = get_input_element_type(0);
+
+    auto data = input_value(0);
+
+    if (data_pshape.is_static())
+    {
+        const auto& data_shape = data.get_shape();
+
+        NODE_VALIDATION_CHECK(
+                this,
+                (data_shape.size() >= 2),
+                "The data tensor with rank lower than 2 is not supported (data rank: ",
+                data_shape.size(),
+                ")");
+
+        auto out_shape = data_shape;
+        for (size_t i = 0; i < out_shape.size(); i++) {
+            switch (i) {
+                case 0:
+                    break;
+                case 1:
+                    out_shape[i] /= (std::pow(m_blocksize, out_shape.size() - 2));
+                    break;
+                default:
+                    out_shape[i] *= m_blocksize;
+                    break;
+            }
+        }
+
+        set_output_size(1);
+        set_output_type(0, data_type, out_shape);
+    }
+    else
+    {
+        set_output_type(0, data_type, PartialShape::dynamic());
+    }
 }
 
 bool op::DepthToSpace::evaluate(const HostTensorVector& outputs,
