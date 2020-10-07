@@ -77,7 +77,7 @@ OutputVector op::PRelu::decompose_op() const
     zero_node = builder::make_broadcast_node(zero_node, data.get_shape());
 
     std::shared_ptr<ngraph::Node> negative_map = std::make_shared<ngraph::op::Convert>(
-        std::make_shared<ngraph::op::Less>(data, zero_node), data.get_element_type());
+        std::make_shared<ngraph::op::v1::Less>(data, zero_node), data.get_element_type());
 
     std::shared_ptr<ngraph::Node> positive_map = std::make_shared<ngraph::op::Convert>(
         std::make_shared<ngraph::op::v1::Greater>(data, zero_node), data.get_element_type());
