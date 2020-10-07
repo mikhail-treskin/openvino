@@ -49,7 +49,7 @@ namespace
 
     void op_is_Add()
     {
-        op::Add node;
+        op::v1::Add node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_comparison(&node));

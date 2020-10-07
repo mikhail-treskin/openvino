@@ -255,7 +255,7 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_atan)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_add)
 {
-    make_binary_empty_test<op::Add>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Add>("${BACKEND_NAME}");
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_divide)

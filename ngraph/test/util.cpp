@@ -222,7 +222,7 @@ TEST_F(CloneTest, clone_nodes_full)
     ASSERT_NE(nullptr, as_type_ptr<op::Parameter>(node_map.at(A.get())));
     ASSERT_NE(nullptr, as_type_ptr<op::Parameter>(node_map.at(B.get())));
     ASSERT_NE(nullptr, as_type_ptr<op::Parameter>(node_map.at(C.get())));
-    ASSERT_NE(nullptr, as_type_ptr<op::Add>(node_map.at(AplusB.get())));
+    ASSERT_NE(nullptr, as_type_ptr<op::v1::Add>(node_map.at(AplusB.get())));
     ASSERT_NE(nullptr, as_type_ptr<op::Multiply>(node_map.at(AplusBtimesC.get())));
 
     auto sorted_nodes = topological_sort(nodes);
@@ -255,7 +255,7 @@ TEST(graph_util, clone_multiple_results)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto A_add_B = make_shared<op::Add>(A, B);
+    auto A_add_B = make_shared<op::v1::Add>(A, B);
     auto A_add_B_mul_C = make_shared<op::Multiply>(A_add_B, C);
 
     auto f = make_shared<Function>(NodeVector{A_add_B, A_add_B_mul_C}, ParameterVector{A, B, C});
@@ -321,7 +321,7 @@ TEST(graph_util, get_subgraph_outputs_trivial_tests)
     outputs = ngraph::get_subgraph_outputs(NodeVector{B, abs_b, abs_b_neg}, NodeVector{});
     ASSERT_EQ(outputs, (NodeVector{B}));
 
-    auto add_b = make_shared<op::Add>(neg_b, abs_b_neg);
+    auto add_b = make_shared<op::v1::Add>(neg_b, abs_b_neg);
     outputs =
         ngraph::get_subgraph_outputs(NodeVector{B, abs_b, neg_b, abs_b_neg, add_b}, NodeVector{});
     ASSERT_EQ(outputs, (NodeVector{}));
@@ -604,7 +604,7 @@ TEST(util, clone_function_friendly_name)
     Shape shape{2, 2};
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>(make_shared<op::Add>(A, B), ParameterVector{A, B});
+    auto f = make_shared<Function>(make_shared<op::v1::Add>(A, B), ParameterVector{A, B});
 
     A->set_friendly_name("A");
     B->set_friendly_name("B");

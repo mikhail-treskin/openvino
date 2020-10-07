@@ -64,7 +64,6 @@ namespace ngraph
             };
 
         } // namespace v1
-        using v1::Add;
     } // namespace op
 
     NGRAPH_DEPRECATED("This operator was deprecated and will be removed with v0 operation.")
