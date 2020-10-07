@@ -223,7 +223,7 @@ TEST_F(CloneTest, clone_nodes_full)
     ASSERT_NE(nullptr, as_type_ptr<op::Parameter>(node_map.at(B.get())));
     ASSERT_NE(nullptr, as_type_ptr<op::Parameter>(node_map.at(C.get())));
     ASSERT_NE(nullptr, as_type_ptr<op::v1::Add>(node_map.at(AplusB.get())));
-    ASSERT_NE(nullptr, as_type_ptr<op::Multiply>(node_map.at(AplusBtimesC.get())));
+    ASSERT_NE(nullptr, as_type_ptr<op::v1::Multiply>(node_map.at(AplusBtimesC.get())));
 
     auto sorted_nodes = topological_sort(nodes);
     auto sorted_cloned_nodes = topological_sort(cloned_nodes);
@@ -256,7 +256,7 @@ TEST(graph_util, clone_multiple_results)
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
     auto A_add_B = make_shared<op::v1::Add>(A, B);
-    auto A_add_B_mul_C = make_shared<op::Multiply>(A_add_B, C);
+    auto A_add_B_mul_C = make_shared<op::v1::Multiply>(A_add_B, C);
 
     auto f = make_shared<Function>(NodeVector{A_add_B, A_add_B_mul_C}, ParameterVector{A, B, C});
 

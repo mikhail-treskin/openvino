@@ -62,9 +62,9 @@ static std::shared_ptr<pattern::op::Label> construct_variance_graph()
     // construct varaiance
     auto N = op::Constant::create(element::f32, Shape{3}, {2, 2, 2});
     auto input = std::make_shared<pattern::op::Label>(element::f32, Shape{2, 3});
-    auto input_sq = std::make_shared<op::Multiply>(input, input);
+    auto input_sq = std::make_shared<op::v1::Multiply>(input, input);
     auto sum_input = std::make_shared<op::Sum>(input, AxisSet{0});
-    auto square_sumed_input = std::make_shared<op::Multiply>(sum_input, sum_input);
+    auto square_sumed_input = std::make_shared<op::v1::Multiply>(sum_input, sum_input);
     auto sum_squared_input = std::make_shared<op::Sum>(input_sq, AxisSet{0});
     auto avg_input_sum_sq = std::make_shared<op::Divide>(square_sumed_input, N);
     auto xmu = std::make_shared<op::Subtract>(sum_squared_input, avg_input_sum_sq);
@@ -502,9 +502,9 @@ TEST(pattern, variance)
     TestMatcher n;
     auto N = op::Constant::create(element::f32, Shape{3}, {2, 2, 2});
     auto input = std::make_shared<pattern::op::Label>(element::f32, Shape{2, 3});
-    auto input_sq = std::make_shared<op::Multiply>(input, input);
+    auto input_sq = std::make_shared<op::v1::Multiply>(input, input);
     auto sum_input = std::make_shared<op::Sum>(input, AxisSet{0});
-    auto square_sumed_input = std::make_shared<op::Multiply>(sum_input, sum_input);
+    auto square_sumed_input = std::make_shared<op::v1::Multiply>(sum_input, sum_input);
     auto sum_squared_input = std::make_shared<op::Sum>(input_sq, AxisSet{0});
     auto avg_input_sum_sq = std::make_shared<op::Divide>(square_sumed_input, N);
     auto xmu = std::make_shared<op::Subtract>(sum_squared_input, avg_input_sum_sq);
@@ -737,7 +737,7 @@ TEST(pattern, label_on_skip)
     auto bcst = std::make_shared<pattern::op::Skip>(const_label, bcst_pred);
     auto bcst_label = std::make_shared<pattern::op::Label>(bcst, nullptr, NodeVector{bcst});
     auto matcher = std::make_shared<pattern::Matcher>(
-        std::make_shared<op::Multiply>(label, bcst_label), "label_on_skip");
+        std::make_shared<op::v1::Multiply>(label, bcst_label), "label_on_skip");
 
     auto const_broadcast = make_shared<op::Broadcast>(iconst, shape, AxisSet{0, 1});
     auto mul = a * const_broadcast;

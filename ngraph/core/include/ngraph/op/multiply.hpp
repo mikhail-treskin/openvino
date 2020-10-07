@@ -53,8 +53,6 @@ namespace ngraph
                               const HostTensorVector& inputs) const override;
             };
         } // namespace v1
-
-        using v1::Multiply;
     } // namespace op
 
     NGRAPH_DEPRECATED("This operator was deprecated and will be removed with v0 operation.")

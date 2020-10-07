@@ -229,7 +229,7 @@ TEST(copy, minimum)
 
 TEST(copy, multiply)
 {
-    ASSERT_TRUE(check_binary<op::Multiply>());
+    ASSERT_TRUE(check_binary<op::v1::Multiply>());
 }
 
 TEST(copy, negative)

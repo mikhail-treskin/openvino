@@ -300,7 +300,7 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_minimum)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_multiply)
 {
-    make_binary_empty_test<op::Multiply>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Multiply>("${BACKEND_NAME}");
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_not_equal)

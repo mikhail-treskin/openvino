@@ -72,7 +72,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -117,7 +117,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -155,7 +155,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -193,7 +193,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -240,7 +240,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -291,7 +291,7 @@ TEST(provenance, provenance)
 
         auto a = make_shared<op::v1::Add>(x, y);
         a->add_provenance_tag("tag_a");
-        auto b = make_shared<op::Multiply>(y, x);
+        auto b = make_shared<op::v1::Multiply>(y, x);
         b->add_provenance_tag("tag_b");
         auto c = make_shared<op::Subtract>(a, b);
         c->add_provenance_tag("tag_c");
@@ -331,7 +331,7 @@ TEST(provenance, add_tags_above)
     auto y = make_shared<op::Parameter>(element::i32, PartialShape{2, 3, 4});
 
     auto a = make_shared<op::v1::Add>(x, y);
-    auto b = make_shared<op::Multiply>(x, y);
+    auto b = make_shared<op::v1::Multiply>(x, y);
     auto c = make_shared<op::Subtract>(a, b);
     auto d = make_shared<op::Abs>(c);
 

@@ -71,7 +71,7 @@ shared_ptr<Function> make_test_graph()
 
     auto t0 = make_shared<op::v1::Add>(arg_0, arg_1);
     auto t1 = make_shared<op::Dot>(t0, arg_2);
-    auto t2 = make_shared<op::Multiply>(t0, arg_3);
+    auto t2 = make_shared<op::v1::Multiply>(t0, arg_3);
 
     auto t3 = make_shared<op::v1::Add>(t1, arg_4);
     auto t4 = make_shared<op::v1::Add>(t2, arg_5);

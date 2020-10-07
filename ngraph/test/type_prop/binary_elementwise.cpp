@@ -102,7 +102,7 @@ TEST(type_prop, multiply_bad_arguments)
 {
     test_binary("Multiply",
                 [](const shared_ptr<Node>& x, const shared_ptr<Node>& y) -> shared_ptr<Node> {
-                    return make_shared<op::Multiply>(x, y);
+                    return make_shared<op::v1::Multiply>(x, y);
                 });
 }
 
@@ -238,7 +238,7 @@ TEST(type_prop, eltwise_auto_bcast)
     test_binary_eltwise_numpy<op::LessEqual>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Maximum>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Minimum>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::Multiply>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::Multiply>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::NotEqual>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Or>(element::boolean, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Power>(element::f32, op::AutoBroadcastType::NUMPY);
