@@ -270,12 +270,12 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_eq)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_greater)
 {
-    make_binary_empty_test<op::Greater>("${BACKEND_NAME}", true);
+    make_binary_empty_test<op::v1::Greater>("${BACKEND_NAME}", true);
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_greatereq)
 {
-    make_binary_empty_test<op::GreaterEqual>("${BACKEND_NAME}", true);
+    make_binary_empty_test<op::v1::GreaterEqual>("${BACKEND_NAME}", true);
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_less)

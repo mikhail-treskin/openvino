@@ -382,7 +382,7 @@ namespace
 
     void op_is_Greater()
     {
-        op::Greater node;
+        op::v1::Greater node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_comparison(&node));
@@ -391,7 +391,7 @@ namespace
 
     void op_is_GreaterEq()
     {
-        op::GreaterEq node;
+        op::v1::GreaterEq node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_comparison(&node));

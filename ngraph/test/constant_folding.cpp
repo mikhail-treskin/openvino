@@ -394,8 +394,8 @@ TEST(constant_folding, constant_unary_binary)
     auto max_autob_numpy = make_shared<op::Maximum>(a, f, op::AutoBroadcastType::NUMPY);
     auto equal_autob_numpy = make_shared<op::v1::Equal>(a, g, op::AutoBroadcastType::NUMPY);
     auto not_equal_autob_numpy = make_shared<op::NotEqual>(a, g, op::AutoBroadcastType::NUMPY);
-    auto greater_autob_numpy = make_shared<op::Greater>(a, g, op::AutoBroadcastType::NUMPY);
-    auto greater_eq_autob_numpy = make_shared<op::GreaterEqual>(a, g, op::AutoBroadcastType::NUMPY);
+    auto greater_autob_numpy = make_shared<op::v1::Greater>(a, g, op::AutoBroadcastType::NUMPY);
+    auto greater_eq_autob_numpy = make_shared<op::v1::GreaterEqual>(a, g, op::AutoBroadcastType::NUMPY);
     auto less_autob_numpy = make_shared<op::Less>(a, g, op::AutoBroadcastType::NUMPY);
     auto less_eq_autob_numpy = make_shared<op::LessEqual>(a, g, op::AutoBroadcastType::NUMPY);
     auto logical_or_autob_numpy = make_shared<op::Or>(h, i, op::AutoBroadcastType::NUMPY);
@@ -1605,14 +1605,14 @@ TEST(constant_folding, const_greater)
         op::Constant::create(element::i32, Shape{2, 3}, vector<int32_t>{1, 2, 3, 4, 5, 6});
     auto constant1 =
         op::Constant::create(element::i32, Shape{2, 3}, vector<int32_t>{2, 2, 2, 5, 5, 5});
-    auto eq = make_shared<op::Greater>(constant0, constant1);
+    auto eq = make_shared<op::v1::Greater>(constant0, constant1);
     auto f = make_shared<Function>(eq, ParameterVector{});
 
     pass::Manager pass_manager;
     pass_manager.register_pass<pass::ConstantFolding>();
     pass_manager.run_passes(f);
 
-    ASSERT_EQ(count_ops_of_type<op::Greater>(f), 0);
+    ASSERT_EQ(count_ops_of_type<op::v1::Greater>(f), 0);
     ASSERT_EQ(count_ops_of_type<op::Constant>(f), 1);
 
     auto new_const =
@@ -1631,14 +1631,14 @@ TEST(constant_folding, const_greater_eq)
         op::Constant::create(element::i32, Shape{2, 3}, vector<int32_t>{1, 2, 3, 4, 5, 6});
     auto constant1 =
         op::Constant::create(element::i32, Shape{2, 3}, vector<int32_t>{2, 2, 2, 5, 5, 5});
-    auto eq = make_shared<op::GreaterEqual>(constant0, constant1);
+    auto eq = make_shared<op::v1::GreaterEqual>(constant0, constant1);
     auto f = make_shared<Function>(eq, ParameterVector{});
 
     pass::Manager pass_manager;
     pass_manager.register_pass<pass::ConstantFolding>();
     pass_manager.run_passes(f);
 
-    ASSERT_EQ(count_ops_of_type<op::GreaterEqual>(f), 0);
+    ASSERT_EQ(count_ops_of_type<op::v1::GreaterEqual>(f), 0);
     ASSERT_EQ(count_ops_of_type<op::Constant>(f), 1);
 
     auto new_const =

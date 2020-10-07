@@ -194,12 +194,12 @@ TEST(copy, floor)
 
 TEST(copy, greater_eq)
 {
-    ASSERT_TRUE(check_binary<op::GreaterEqual>());
+    ASSERT_TRUE(check_binary<op::v1::GreaterEqual>());
 }
 
 TEST(copy, greater)
 {
-    ASSERT_TRUE(check_binary<op::Greater>());
+    ASSERT_TRUE(check_binary<op::v1::Greater>());
 }
 
 TEST(copy, less_eq)
