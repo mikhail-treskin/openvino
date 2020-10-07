@@ -338,7 +338,7 @@ TEST(copy, slice)
 
 TEST(copy, subtract)
 {
-    ASSERT_TRUE(check_binary<op::Subtract>());
+    ASSERT_TRUE(check_binary<op::v1::Subtract>());
 }
 
 TEST(copy, sum)

@@ -67,7 +67,7 @@ static std::shared_ptr<pattern::op::Label> construct_variance_graph()
     auto square_sumed_input = std::make_shared<op::v1::Multiply>(sum_input, sum_input);
     auto sum_squared_input = std::make_shared<op::Sum>(input_sq, AxisSet{0});
     auto avg_input_sum_sq = std::make_shared<op::Divide>(square_sumed_input, N);
-    auto xmu = std::make_shared<op::Subtract>(sum_squared_input, avg_input_sum_sq);
+    auto xmu = std::make_shared<op::v1::Subtract>(sum_squared_input, avg_input_sum_sq);
     auto variance = std::make_shared<op::Divide>(xmu, N);
     auto variance_label =
         std::make_shared<pattern::op::Label>(variance, nullptr, NodeVector{variance});
@@ -507,7 +507,7 @@ TEST(pattern, variance)
     auto square_sumed_input = std::make_shared<op::v1::Multiply>(sum_input, sum_input);
     auto sum_squared_input = std::make_shared<op::Sum>(input_sq, AxisSet{0});
     auto avg_input_sum_sq = std::make_shared<op::Divide>(square_sumed_input, N);
-    auto xmu = std::make_shared<op::Subtract>(sum_squared_input, avg_input_sum_sq);
+    auto xmu = std::make_shared<op::v1::Subtract>(sum_squared_input, avg_input_sum_sq);
     auto variance = std::make_shared<op::Divide>(xmu, N);
 
     auto var_graph = construct_variance_graph();

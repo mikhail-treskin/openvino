@@ -315,5 +315,5 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_power)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_subtract)
 {
-    make_binary_empty_test<op::Subtract>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Subtract>("${BACKEND_NAME}");
 }

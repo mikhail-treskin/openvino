@@ -110,7 +110,7 @@ TEST(type_prop, subtract_bad_arguments)
 {
     test_binary("Subtract",
                 [](const shared_ptr<Node>& x, const shared_ptr<Node>& y) -> shared_ptr<Node> {
-                    return make_shared<op::Subtract>(x, y);
+                    return make_shared<op::v1::Subtract>(x, y);
                 });
 }
 
@@ -242,7 +242,7 @@ TEST(type_prop, eltwise_auto_bcast)
     test_binary_eltwise_numpy<op::NotEqual>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Or>(element::boolean, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Power>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::Subtract>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::Subtract>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Xor>(element::boolean, op::AutoBroadcastType::NUMPY);
 }
 

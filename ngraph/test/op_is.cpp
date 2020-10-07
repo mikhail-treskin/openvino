@@ -904,7 +904,7 @@ namespace
 
     void op_is_Subtract()
     {
-        op::Subtract node;
+        op::v1::Subtract node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_comparison(&node));
