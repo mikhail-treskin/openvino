@@ -283,7 +283,7 @@ namespace
 
     void op_is_Equal()
     {
-        op::Equal node;
+        op::v1::Equal node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_comparison(&node));

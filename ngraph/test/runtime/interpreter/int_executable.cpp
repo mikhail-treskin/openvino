@@ -202,7 +202,7 @@ bool runtime::interpreter::INTExecutable::call(const vector<shared_ptr<runtime::
         {
             type = op->get_input_element_type(0);
         }
-        else if (is_type<op::Equal>(op) || is_type<op::Greater>(op) ||
+        else if (is_type<op::v1::Equal>(op) || is_type<op::Greater>(op) ||
                  is_type<op::GreaterEqual>(op) || is_type<op::Less>(op) ||
                  is_type<op::LessEqual>(op) || is_type<op::NotEqual>(op))
         {

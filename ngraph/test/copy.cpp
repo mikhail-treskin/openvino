@@ -179,7 +179,7 @@ TEST(copy, dot)
 
 TEST(copy, equal)
 {
-    ASSERT_TRUE(check_binary<op::Equal>());
+    ASSERT_TRUE(check_binary<op::v1::Equal>());
 }
 
 TEST(copy, exp)
