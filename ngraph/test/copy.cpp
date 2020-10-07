@@ -204,7 +204,7 @@ TEST(copy, greater)
 
 TEST(copy, less_eq)
 {
-    ASSERT_TRUE(check_binary<op::LessEqual>());
+    ASSERT_TRUE(check_binary<op::v1::LessEqual>());
 }
 
 TEST(copy, less)
