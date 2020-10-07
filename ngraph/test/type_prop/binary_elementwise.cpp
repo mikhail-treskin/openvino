@@ -94,7 +94,7 @@ TEST(type_prop, divide_bad_arguments)
 {
     test_binary("Divide",
                 [](const shared_ptr<Node>& x, const shared_ptr<Node>& y) -> shared_ptr<Node> {
-                    return make_shared<op::Divide>(x, y);
+                    return make_shared<op::v1::Divide>(x, y);
                 });
 }
 
@@ -230,7 +230,7 @@ void test_binary_eltwise_numpy(const element::Type& et, const op::AutoBroadcastS
 TEST(type_prop, eltwise_auto_bcast)
 {
     test_binary_eltwise_numpy<op::v1::Add>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::Divide>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::Divide>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Equal>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Greater>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::GreaterEqual>(element::f32, op::AutoBroadcastType::NUMPY);

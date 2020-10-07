@@ -229,7 +229,7 @@ namespace
 
     void op_is_Divide()
     {
-        op::Divide node;
+        op::v1::Divide node;
         EXPECT_FALSE(op::is_unary_elementwise_arithmetic(&node));
         EXPECT_TRUE(op::is_binary_elementwise_arithmetic(&node));
         EXPECT_FALSE(op::is_binary_elementwise_comparison(&node));

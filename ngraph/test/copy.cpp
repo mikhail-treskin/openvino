@@ -169,7 +169,7 @@ TEST(copy, cosh)
 
 TEST(copy, divide)
 {
-    ASSERT_TRUE(check_binary<op::Divide>());
+    ASSERT_TRUE(check_binary<op::v1::Divide>());
 }
 
 TEST(copy, dot)

@@ -388,7 +388,7 @@ TEST(constant_folding, constant_unary_binary)
     auto add_autob_numpy = make_shared<op::v1::Add>(a, e, op::AutoBroadcastType::NUMPY);
     auto sub_autob_numpy = make_shared<op::v1::Subtract>(a, e, op::AutoBroadcastType::NUMPY);
     auto mul_autob_numpy = make_shared<op::v1::Multiply>(a, e, op::AutoBroadcastType::NUMPY);
-    auto div_autob_numpy = make_shared<op::Divide>(a, g, op::AutoBroadcastType::NUMPY);
+    auto div_autob_numpy = make_shared<op::v1::Divide>(a, g, op::AutoBroadcastType::NUMPY);
     auto pow_autob_numpy = make_shared<op::Power>(a, g, op::AutoBroadcastType::NUMPY);
     auto min_autob_numpy = make_shared<op::Minimum>(a, f, op::AutoBroadcastType::NUMPY);
     auto max_autob_numpy = make_shared<op::Maximum>(a, f, op::AutoBroadcastType::NUMPY);

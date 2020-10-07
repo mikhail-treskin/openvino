@@ -260,7 +260,7 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_add)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_divide)
 {
-    make_binary_empty_test<op::Divide>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Divide>("${BACKEND_NAME}");
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_eq)
