@@ -25,8 +25,6 @@
 #include "util/test_control.hpp"
 #include "util/test_tools.hpp"
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using namespace std;
 using namespace ngraph;
 
@@ -290,12 +288,12 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_lesseq)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_maximum)
 {
-    make_binary_empty_test<op::Maximum>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Maximum>("${BACKEND_NAME}");
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_minimum)
 {
-    make_binary_empty_test<op::Minimum>("${BACKEND_NAME}");
+    make_binary_empty_test<op::v1::Minimum>("${BACKEND_NAME}");
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_multiply)
@@ -305,7 +303,7 @@ NGRAPH_TEST(${BACKEND_NAME}, zero_sized_multiply)
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_not_equal)
 {
-    make_binary_empty_test<op::NotEqual>("${BACKEND_NAME}", true);
+    make_binary_empty_test<op::v1::NotEqual>("${BACKEND_NAME}", true);
 }
 
 NGRAPH_TEST(${BACKEND_NAME}, zero_sized_power)

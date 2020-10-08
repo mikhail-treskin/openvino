@@ -31,8 +31,6 @@
 #include "util/all_close.hpp"
 #include "util/ndarray.hpp"
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using namespace std;
 using namespace ngraph;
 
@@ -174,8 +172,8 @@ public:
     std::shared_ptr<op::Parameter> A = make_shared<op::Parameter>(element::f32, shape);
     std::shared_ptr<op::Parameter> B = make_shared<op::Parameter>(element::f32, shape);
     std::shared_ptr<op::Parameter> C = make_shared<op::Parameter>(element::f32, shape);
-    std::shared_ptr<Node> AplusB = A + B;
-    std::shared_ptr<Node> AplusBtimesC = AplusB * C;
+    std::shared_ptr<Node> AplusB = make_shared<op::v1::Add>(A, B);
+    std::shared_ptr<Node> AplusBtimesC = make_shared<op::v1::Multiply>(AplusB, C);
 
     NodeMap node_map;
     std::vector<std::shared_ptr<ngraph::Node>> nodes;
@@ -337,8 +335,8 @@ TEST(graph_util, test_subgraph_topological_sort)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto add = A + B;
-    auto mul = C * add;
+    auto add = make_shared<op::v1::Add>(A, B);
+    auto mul = make_shared<op::v1::Multiply>(C, add);
     auto result = make_shared<op::Result>(mul);
     auto sorted = ngraph::subgraph_topological_sort(NodeVector{mul, add, A});
     std::vector<std::shared_ptr<Node>> expected{A, add, mul};
@@ -353,7 +351,7 @@ TEST(graph_util, test_subgraph_topological_sort_control_dependencies)
     auto C = make_shared<op::Parameter>(element::f32, shape);
     auto D = make_shared<op::Abs>(A);
     auto E = make_shared<op::Abs>(B);
-    auto add = A + B;
+    auto add = make_shared<op::v1::Add>(A, B);
     add->add_control_dependency(D);
     add->add_control_dependency(E);
     auto mul = C * add;
@@ -628,7 +626,8 @@ TEST(util, clone_function_op_annotations)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>(A + B + C, ParameterVector{A, B, C});
+    auto f = make_shared<Function>(
+            make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C), ParameterVector{A, B, C});
 
     auto cacheable_op_annotation = std::make_shared<op::util::OpAnnotations>();
     cacheable_op_annotation->set_cacheable(true);
@@ -666,7 +665,8 @@ TEST(util, topological_sort_replace)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>(A + B + C, ParameterVector{A, B, C});
+    auto f = make_shared<Function>(
+            make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C), ParameterVector{A, B, C});
     bool custom_sorter_used = false;
 
     f->set_topological_sort(

@@ -384,7 +384,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_missing_input)
                 B = B / C;
             }
 
-            C = C + C;
+            C = std::make_shared<ngraph::op::v1::Add>(C, C);
             return {A, B, C};
         });
 

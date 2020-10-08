@@ -140,7 +140,7 @@ OutputVector op::FakeQuantize::decompose_op() const
 
     // clip the input data to the range <input_low;input_high>
     data =
-        std::make_shared<op::Minimum>(input_high, std::make_shared<op::Maximum>(input_low, data));
+        std::make_shared<op::v1::Minimum>(input_high, std::make_shared<op::v1::Maximum>(input_low, data));
 
     // shift the input data so that it contains only positive values (and zeros)
     data = data - input_low;
@@ -159,7 +159,7 @@ OutputVector op::FakeQuantize::decompose_op() const
     const auto dequantized_data = quantized_data * dequant_scale;
 
     // shift the results so that they fall into the <output_low;output_high> range
-    return {dequantized_data + output_low};
+    return {std::make_shared<op::v1::Add>(dequantized_data, output_low)};
 }
 
 shared_ptr<Node> op::FakeQuantize::clone_with_new_inputs(const OutputVector& new_args) const

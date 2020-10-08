@@ -18,8 +18,6 @@
 #include "ngraph/ngraph.hpp"
 #include "util/type_prop.hpp"
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using namespace std;
 using namespace ngraph;
 
@@ -236,10 +234,10 @@ TEST(type_prop, eltwise_auto_bcast)
     test_binary_eltwise_numpy<op::v1::GreaterEqual>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::v1::Less>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::v1::LessEqual>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::Maximum>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::Minimum>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::Maximum>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::Minimum>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::v1::Multiply>(element::f32, op::AutoBroadcastType::NUMPY);
-    test_binary_eltwise_numpy<op::NotEqual>(element::f32, op::AutoBroadcastType::NUMPY);
+    test_binary_eltwise_numpy<op::v1::NotEqual>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Or>(element::boolean, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::Power>(element::f32, op::AutoBroadcastType::NUMPY);
     test_binary_eltwise_numpy<op::v1::Subtract>(element::f32, op::AutoBroadcastType::NUMPY);

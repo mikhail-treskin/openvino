@@ -65,8 +65,4 @@ namespace ngraph
 
         } // namespace v1
     } // namespace op
-
-    NGRAPH_DEPRECATED("This operator was deprecated and will be removed with v0 operation.")
-    NGRAPH_API
-    std::shared_ptr<Node> operator+(const Output<Node>& arg0, const Output<Node>& arg1);
 } // namespace ngraph

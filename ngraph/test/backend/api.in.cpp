@@ -24,8 +24,6 @@
 #include "util/test_control.hpp"
 #include "util/test_tools.hpp"
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using namespace std;
 using namespace ngraph;
 
@@ -63,7 +61,8 @@ NGRAPH_TEST(${BACKEND_NAME}, get_parameters_and_results)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>((A + B) * C, ParameterVector{A, B, C});
+    auto arg = make_shared<op::v1::Multiply>(make_shared<op::v1::Add>(A, B), C);
+    auto f = make_shared<Function>(arg, ParameterVector{A, B, C});
 
     auto backend = runtime::Backend::create("${BACKEND_NAME}");
 

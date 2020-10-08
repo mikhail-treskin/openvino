@@ -23,8 +23,6 @@
 #include "util/ndarray.hpp"
 #include "util/test_tools.hpp"
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using namespace std;
 using namespace ngraph;
 
@@ -219,12 +217,12 @@ TEST(copy, log)
 
 TEST(copy, maximum)
 {
-    ASSERT_TRUE(check_binary<op::Maximum>());
+    ASSERT_TRUE(check_binary<op::v1::Maximum>());
 }
 
 TEST(copy, minimum)
 {
-    ASSERT_TRUE(check_binary<op::Minimum>());
+    ASSERT_TRUE(check_binary<op::v1::Minimum>());
 }
 
 TEST(copy, multiply)
@@ -239,7 +237,7 @@ TEST(copy, negative)
 
 TEST(copy, not_equal)
 {
-    ASSERT_TRUE(check_binary<op::NotEqual>());
+    ASSERT_TRUE(check_binary<op::v1::NotEqual>());
 }
 
 TEST(copy, parameter)

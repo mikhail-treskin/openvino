@@ -34,8 +34,6 @@ using namespace std;
 using namespace ngraph;
 using ::testing::Return;
 
-NGRAPH_SUPPRESS_DEPRECATED_START
-
 using ProvSet = std::unordered_set<std::string>;
 
 TEST(provenance, provenance)
@@ -316,8 +314,8 @@ TEST(provenance, add_group_above)
     p1->add_provenance_tag("P1");
     auto p2 = make_shared<op::Parameter>(element::i32, PartialShape{2, 3, 4});
     p2->add_provenance_tag("P2");
-    auto a1 = p1 + p2;
-    auto m1 = (a1 * a1)->add_provenance_group_members_above({p1, p2});
+    auto a1 = make_shared<op::v1::Add>(p1, p2);
+    auto m1 = make_shared<op::v1::Multiply>(a1, a1)->add_provenance_group_members_above({p1, p2});
     m1->add_provenance_tag("m1");
     EXPECT_EQ(p1->get_provenance_tags(), (ProvSet{"P1"}));
     EXPECT_EQ(p2->get_provenance_tags(), (ProvSet{"P2"}));
