@@ -64,5 +64,5 @@ namespace ngraph
             };
 
         } // namespace v1
-    } // namespace op
+    }     // namespace op
 } // namespace ngraph

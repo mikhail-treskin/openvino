@@ -67,7 +67,7 @@ namespace ngraph
                     auto split_bias = builder::opset1::split(bias, 2, 1);
                     NGRAPH_SUPPRESS_DEPRECATED_START
                     m_map[OpInput::B] =
-                            std::make_shared<ngraph::op::v1::Add>(split_bias.at(0), split_bias.at(1));
+                        std::make_shared<ngraph::op::v1::Add>(split_bias.at(0), split_bias.at(1));
                     NGRAPH_SUPPRESS_DEPRECATED_END
                 }
                 else

@@ -131,18 +131,18 @@ OutputVector op::FakeQuantize::decompose_op() const
                          vector<size_t>(shape_size(input_data_shape), m_levels - 1));
 
     // map the number of quantization levels to the nGraph's quantization and dequantization scales
-    const auto quant_scale =
-            std::make_shared<op::v1::Divide>(std::make_shared<op::v1::Subtract>(input_high, input_low), levels_minus_one);
-    const auto dequant_scale =
-            std::make_shared<op::v1::Divide>(std::make_shared<op::v1::Subtract>(output_high, output_low), levels_minus_one);
+    const auto quant_scale = std::make_shared<op::v1::Divide>(
+        std::make_shared<op::v1::Subtract>(input_high, input_low), levels_minus_one);
+    const auto dequant_scale = std::make_shared<op::v1::Divide>(
+        std::make_shared<op::v1::Subtract>(output_high, output_low), levels_minus_one);
 
     // zero_point type needs to match the quantization output type
     const auto zero_point = Constant::create(element::i32, data.get_shape(), {0.0});
     const auto axes = get_default_order(input_data_shape);
 
     // clip the input data to the range <input_low;input_high>
-    data =
-        std::make_shared<op::v1::Minimum>(input_high, std::make_shared<op::v1::Maximum>(input_low, data));
+    data = std::make_shared<op::v1::Minimum>(input_high,
+                                             std::make_shared<op::v1::Maximum>(input_low, data));
 
     // shift the input data so that it contains only positive values (and zeros)
     data = std::make_shared<op::v1::Subtract>(data, input_low);

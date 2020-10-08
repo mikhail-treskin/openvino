@@ -626,8 +626,8 @@ TEST(util, clone_function_op_annotations)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>(
-            make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C), ParameterVector{A, B, C});
+    auto f = make_shared<Function>(make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C),
+                                   ParameterVector{A, B, C});
 
     auto cacheable_op_annotation = std::make_shared<op::util::OpAnnotations>();
     cacheable_op_annotation->set_cacheable(true);
@@ -665,8 +665,8 @@ TEST(util, topological_sort_replace)
     auto A = make_shared<op::Parameter>(element::f32, shape);
     auto B = make_shared<op::Parameter>(element::f32, shape);
     auto C = make_shared<op::Parameter>(element::f32, shape);
-    auto f = make_shared<Function>(
-            make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C), ParameterVector{A, B, C});
+    auto f = make_shared<Function>(make_shared<op::v1::Add>(make_shared<op::v1::Add>(A, B), C),
+                                   ParameterVector{A, B, C});
     bool custom_sorter_used = false;
 
     f->set_topological_sort(

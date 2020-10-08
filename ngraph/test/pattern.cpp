@@ -265,8 +265,10 @@ TEST(pattern, graph_rewrite)
         auto a = make_shared<op::Parameter>(element::i32, shape);
         auto b = make_shared<op::Parameter>(element::i32, shape);
         auto iconst1 = construct_constant_node(1);
-        auto multiply = make_shared<op::v1::Multiply>(make_shared<op::v1::Multiply>(a, iconst1), iconst1);
-        multiply = make_shared<op::v1::Multiply>(make_shared<op::v1::Multiply>(multiply, iconst1), iconst1);
+        auto multiply =
+            make_shared<op::v1::Multiply>(make_shared<op::v1::Multiply>(a, iconst1), iconst1);
+        multiply = make_shared<op::v1::Multiply>(make_shared<op::v1::Multiply>(multiply, iconst1),
+                                                 iconst1);
         auto graph = make_shared<op::v1::Add>(multiply, b);
         run_passes(pass_manager, graph, {a, b});
         ASSERT_EQ(graph->input_value(0).get_node_shared_ptr(), a);
@@ -293,7 +295,8 @@ TEST(pattern, graph_rewrite)
         auto a = make_shared<op::Parameter>(element::i32, shape);
         auto b = make_shared<op::Parameter>(element::i32, shape);
         auto iconst1 = construct_constant_node(1);
-        auto mul = make_shared<op::v1::Multiply>(iconst1, make_shared<op::v1::Multiply>(iconst1, a));
+        auto mul =
+            make_shared<op::v1::Multiply>(iconst1, make_shared<op::v1::Multiply>(iconst1, a));
         mul = make_shared<op::v1::Multiply>(iconst1, make_shared<op::v1::Multiply>(iconst1, mul));
         auto graph = make_shared<op::v1::Add>(b, mul);
         run_passes(pass_manager, graph, {a, b});
@@ -370,7 +373,8 @@ TEST(pattern, matcher)
     auto d = make_shared<op::Parameter>(element::i32, shape);
     ASSERT_FALSE(n.match(d, b));
 
-    ASSERT_FALSE(n.match(std::make_shared<op::v1::Add>(abs, b), std::make_shared<op::v1::Add>(b, b)));
+    ASSERT_FALSE(
+        n.match(std::make_shared<op::v1::Add>(abs, b), std::make_shared<op::v1::Add>(b, b)));
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{}));
 
     auto add_absb = std::make_shared<op::v1::Add>(abs, b);
@@ -387,28 +391,39 @@ TEST(pattern, matcher)
 
     auto c = make_shared<op::Parameter>(element::i32, shape);
     auto mul_add_absb = std::make_shared<op::v1::Multiply>(c, add_absb);
-    ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(b, pattern)), mul_add_absb));
+    ASSERT_TRUE(
+        n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(b, pattern)),
+                mul_add_absb));
     ASSERT_EQ(n.get_pattern_map()[pattern], abs);
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{mul_add_absb, c, add_absb, abs, b}));
 
-    ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any, b)), mul_add_absb)); // nested any
+    ASSERT_TRUE(
+        n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any, b)),
+                mul_add_absb)); // nested any
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{mul_add_absb, c, add_absb, abs, a, b}));
-    ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any, b)),
-                        std::make_shared<op::v1::Multiply>(std::make_shared<op::v1::Add>(b, abs), c))); // permutations w/ any
+    ASSERT_TRUE(
+        n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any, b)),
+                std::make_shared<op::v1::Multiply>(std::make_shared<op::v1::Add>(b, abs),
+                                                   c))); // permutations w/ any
     auto mul_c_add_ab = make_shared<op::v1::Multiply>(c, add_ab);
-    ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any_false, b)),
-                        std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(a, b))));  //
+    ASSERT_TRUE(
+        n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any_false, b)),
+                std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(a, b)))); //
     // nested any
-    ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any_false, b)), mul_c_add_ab)); // permutations w/ any_false
+    ASSERT_TRUE(
+        n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any_false, b)),
+                mul_c_add_ab)); // permutations w/ any_false
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{mul_c_add_ab, c, add_ab, a, a, b}));
 
     auto iconst1_0 = construct_constant_node(1);
     auto iconst1_1 = construct_constant_node(1);
-    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(pattern, iconst1_0), make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
+    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(pattern, iconst1_0),
+                        make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
     ASSERT_EQ(n.get_pattern_map()[pattern], a);
     auto fconst1_0 = op::Constant::create(element::f32, shape, {1});
     auto patternf = std::make_shared<pattern::op::Label>(fconst1_0);
-    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(patternf, fconst1_0), make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
+    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(patternf, fconst1_0),
+                        make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
 
     // Subgraph labels
     auto add = std::make_shared<op::v1::Add>(a, b);
@@ -451,10 +466,14 @@ TEST(pattern, matcher)
     ASSERT_EQ(n.get_pattern_map()[label2], add);
 
     // Or
-    ASSERT_TRUE(n.match(std::make_shared<pattern::op::Or>(
-            OutputVector{std::make_shared<op::v1::Add>(a, b), std::make_shared<op::v1::Subtract>(a, b)}), std::make_shared<op::v1::Add>(a, b)));
-    ASSERT_TRUE(n.match(std::make_shared<pattern::op::Or>(OutputVector{
-    std::make_shared<op::v1::Add>(a, b), std::make_shared<op::v1::Subtract>(a, b)}), std::make_shared<op::v1::Subtract>(a, b)));
+    ASSERT_TRUE(
+        n.match(std::make_shared<pattern::op::Or>(OutputVector{
+                    std::make_shared<op::v1::Add>(a, b), std::make_shared<op::v1::Subtract>(a, b)}),
+                std::make_shared<op::v1::Add>(a, b)));
+    ASSERT_TRUE(
+        n.match(std::make_shared<pattern::op::Or>(OutputVector{
+                    std::make_shared<op::v1::Add>(a, b), std::make_shared<op::v1::Subtract>(a, b)}),
+                std::make_shared<op::v1::Subtract>(a, b)));
 
     // Branch
     {
@@ -463,7 +482,8 @@ TEST(pattern, matcher)
             OutputVector{branch, std::make_shared<pattern::op::True>()});
         auto pattern = std::make_shared<op::v1::Add>(star, star);
         branch->set_destination(pattern);
-        auto arg = std::make_shared<op::v1::Add>(std::make_shared<op::v1::Add>(a, b), std::make_shared<op::v1::Add>(b, a));
+        auto arg = std::make_shared<op::v1::Add>(std::make_shared<op::v1::Add>(a, b),
+                                                 std::make_shared<op::v1::Add>(b, a));
         ASSERT_TRUE(n.match(pattern, std::make_shared<op::v1::Add>(arg, a)));
         ASSERT_EQ(n.get_matched_nodes().size(), 4);
     }

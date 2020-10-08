@@ -393,7 +393,8 @@ TEST(constant_folding, constant_unary_binary)
     auto equal_autob_numpy = make_shared<op::v1::Equal>(a, g, op::AutoBroadcastType::NUMPY);
     auto not_equal_autob_numpy = make_shared<op::v1::NotEqual>(a, g, op::AutoBroadcastType::NUMPY);
     auto greater_autob_numpy = make_shared<op::v1::Greater>(a, g, op::AutoBroadcastType::NUMPY);
-    auto greater_eq_autob_numpy = make_shared<op::v1::GreaterEqual>(a, g, op::AutoBroadcastType::NUMPY);
+    auto greater_eq_autob_numpy =
+        make_shared<op::v1::GreaterEqual>(a, g, op::AutoBroadcastType::NUMPY);
     auto less_autob_numpy = make_shared<op::v1::Less>(a, g, op::AutoBroadcastType::NUMPY);
     auto less_eq_autob_numpy = make_shared<op::v1::LessEqual>(a, g, op::AutoBroadcastType::NUMPY);
     auto logical_or_autob_numpy = make_shared<op::Or>(h, i, op::AutoBroadcastType::NUMPY);
@@ -2161,8 +2162,8 @@ TEST(constant_folding, constant_dyn_reshape_shape_not_originally_constant)
     auto constant_in = make_shared<op::Constant>(element::f32, shape_in, values_in);
     auto constant_shape_a = make_shared<op::Constant>(element::i64, shape_shape, values_shape_a);
     auto constant_shape_b = make_shared<op::Constant>(element::i64, shape_shape, values_shape_b);
-    auto dyn_reshape =
-        make_shared<op::v1::Reshape>(constant_in, make_shared<op::v1::Add>(constant_shape_a, constant_shape_b), false);
+    auto dyn_reshape = make_shared<op::v1::Reshape>(
+        constant_in, make_shared<op::v1::Add>(constant_shape_a, constant_shape_b), false);
     auto f = make_shared<Function>(dyn_reshape, ParameterVector{});
 
     ASSERT_TRUE(dyn_reshape->get_output_partial_shape(0).is_dynamic());

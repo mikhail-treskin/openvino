@@ -390,7 +390,8 @@ NGRAPH_TEST(${BACKEND_NAME}, concat_in_place_tree_2)
     auto concat1 = make_shared<op::Concat>(NodeVector{add1, add2}, 1);
     auto concat2 = make_shared<op::Concat>(NodeVector{add1, add2}, 1);
     auto concat12 = make_shared<op::Concat>(NodeVector{concat1, concat2}, 1);
-    auto f = make_shared<Function>(make_shared<op::v1::Add>(concat12, concat12), ParameterVector{A, B});
+    auto f =
+        make_shared<Function>(make_shared<op::v1::Add>(concat12, concat12), ParameterVector{A, B});
     auto backend = runtime::Backend::create("${BACKEND_NAME}");
 
     // Create some tensors for input/output
@@ -420,7 +421,8 @@ NGRAPH_TEST(${BACKEND_NAME}, concat_in_place_tree_3)
     auto concat12 = make_shared<op::Concat>(NodeVector{concat1, concat2}, 1);
     auto concat34 = make_shared<op::Concat>(NodeVector{concat3, concat4}, 1);
     auto concat14 = make_shared<op::Concat>(NodeVector{concat12, concat34}, 1);
-    auto f = make_shared<Function>(make_shared<op::v1::Add>(concat14, concat14), ParameterVector{A, B});
+    auto f =
+        make_shared<Function>(make_shared<op::v1::Add>(concat14, concat14), ParameterVector{A, B});
     auto backend = runtime::Backend::create("${BACKEND_NAME}");
     // Create some tensors for input/output
     auto a = backend->create_tensor(element::f32, shape);

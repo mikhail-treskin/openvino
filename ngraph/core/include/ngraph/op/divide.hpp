@@ -70,5 +70,5 @@ namespace ngraph
                 bool m_pythondiv{true};
             };
         } // namespace v1
-    } // namespace op
+    }     // namespace op
 } // namespace ngraph
