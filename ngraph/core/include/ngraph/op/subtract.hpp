@@ -52,9 +52,4 @@ namespace ngraph
             };
         } // namespace v1
     } // namespace op
-
-    NGRAPH_DEPRECATED("This operator was deprecated and will be removed with v0 operation.")
-    NGRAPH_API
-    std::shared_ptr<ngraph::Node> operator-(const Output<ngraph::Node> arg0,
-                                            const Output<ngraph::Node> arg1);
 } // namespace ngraph

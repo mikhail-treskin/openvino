@@ -417,7 +417,7 @@ TEST(pattern, matcher)
     ASSERT_EQ(n.get_pattern_map()[label], add);
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{add, add, a, b}));
 
-    ASSERT_FALSE(n.match(label, a - b));
+    ASSERT_FALSE(n.match(label, std::make_shared<op::v1::Subtract>(a, b)));
 
     ASSERT_TRUE(n.match(make_shared<op::Abs>(label), make_shared<op::Abs>(add)));
     ASSERT_EQ(n.get_pattern_map()[label], add);
@@ -436,14 +436,14 @@ TEST(pattern, matcher)
     auto label1 = std::make_shared<pattern::op::Label>(a);
     auto tmp = std::make_shared<op::v1::Add>(label1, b);
     auto label2 = std::make_shared<pattern::op::Label>(tmp, nullptr, NodeVector{tmp});
-    auto sub_label1 = label1 - label2;
-    auto sub_add = a - add;
+    auto sub_label1 = std::make_shared<op::v1::Subtract>(label1, label2);
+    auto sub_add = std::make_shared<op::v1::Subtract>(a, add);
     ASSERT_TRUE(n.match(sub_label1, sub_add));
     ASSERT_EQ(n.get_pattern_map()[label1], a);
     ASSERT_EQ(n.get_pattern_map()[label2], add);
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{sub_add, a, add, add, a, b}));
 
-    ASSERT_FALSE(n.match(sub_label1, add - a));
+    ASSERT_FALSE(n.match(sub_label1, std::make_shared<op::v1::Subtract>(add, a)));
 
     auto add_label1 = std::make_shared<op::v1::Add>(label1, label2);
     ASSERT_TRUE(n.match(add_label1, std::make_shared<op::v1::Add>(add, a)));

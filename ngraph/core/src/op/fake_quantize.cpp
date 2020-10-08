@@ -145,7 +145,7 @@ OutputVector op::FakeQuantize::decompose_op() const
         std::make_shared<op::v1::Minimum>(input_high, std::make_shared<op::v1::Maximum>(input_low, data));
 
     // shift the input data so that it contains only positive values (and zeros)
-    data = data - input_low;
+    data = std::make_shared<op::v1::Subtract>(data, input_low);
 
     shared_ptr<Node> quantized_data =
         make_shared<op::Quantize>(data,

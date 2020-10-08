@@ -80,7 +80,7 @@ OutputVector op::MVN::decompose_op() const
     // calculate mean normalization
     auto mean = builder::opset1::mean(data, m_reduction_axes);
     mean = std::make_shared<op::Broadcast>(mean, data_shape, m_reduction_axes);
-    auto mean_normalization = data - mean;
+    auto mean_normalization = std::make_shared<op::v1::Subtract>(data, mean);
 
     if (!m_normalize_variance)
     {
