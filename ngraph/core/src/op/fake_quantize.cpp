@@ -158,7 +158,7 @@ OutputVector op::FakeQuantize::decompose_op() const
     quantized_data = make_shared<op::Convert>(quantized_data, input_data_type);
 
     // dequantization without using the Dequantize op (just a multiplication by the dequant_scale)
-    const auto dequantized_data = quantized_data * dequant_scale;
+    const auto dequantized_data = make_shared<op::v1::Multiply>(quantized_data, dequant_scale);
 
     // shift the results so that they fall into the <output_low;output_high> range
     return {std::make_shared<op::v1::Add>(dequantized_data, output_low)};

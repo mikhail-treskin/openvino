@@ -50,7 +50,7 @@ OutputVector op::SquaredDifference::decompose_op() const
 
     const auto difference = make_shared<op::v1::Subtract>(x1, x2, m_autobroadcast);
 
-    return {difference * difference};
+    return {make_shared<op::v1::Multiply>(difference, difference)};
 }
 
 shared_ptr<Node> op::SquaredDifference::clone_with_new_inputs(const OutputVector& new_args) const

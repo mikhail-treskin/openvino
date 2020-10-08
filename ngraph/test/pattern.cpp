@@ -132,7 +132,7 @@ public:
             return true;
         };
 
-        auto m = make_shared<TestMatcher>(pattern * iconst1);
+        auto m = make_shared<TestMatcher>(make_shared<op::v1::Multiply>(pattern, iconst1));
         NGRAPH_SUPPRESS_DEPRECATED_START
         this->add_matcher(m, callback);
         NGRAPH_SUPPRESS_DEPRECATED_END
@@ -395,7 +395,7 @@ TEST(pattern, matcher)
     ASSERT_EQ(n.get_matched_nodes(), (NodeVector{mul_add_absb, c, add_absb, abs, a, b}));
     ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any, b)),
                         std::make_shared<op::v1::Multiply>(std::make_shared<op::v1::Add>(b, abs), c))); // permutations w/ any
-    auto mul_c_add_ab = c * add_ab;
+    auto mul_c_add_ab = make_shared<op::v1::Multiply>(c, add_ab);
     ASSERT_TRUE(n.match(std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(any_false, b)),
                         std::make_shared<op::v1::Multiply>(c, std::make_shared<op::v1::Add>(a, b))));  //
     // nested any
@@ -404,11 +404,11 @@ TEST(pattern, matcher)
 
     auto iconst1_0 = construct_constant_node(1);
     auto iconst1_1 = construct_constant_node(1);
-    ASSERT_TRUE(n.match(pattern * iconst1_0, a * iconst1_1)); // different iconst
+    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(pattern, iconst1_0), make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
     ASSERT_EQ(n.get_pattern_map()[pattern], a);
     auto fconst1_0 = op::Constant::create(element::f32, shape, {1});
     auto patternf = std::make_shared<pattern::op::Label>(fconst1_0);
-    ASSERT_TRUE(n.match(patternf * fconst1_0, a * iconst1_1)); // different iconst
+    ASSERT_TRUE(n.match(make_shared<op::v1::Multiply>(patternf, fconst1_0), make_shared<op::v1::Multiply>(a, iconst1_1))); // different iconst
 
     // Subgraph labels
     auto add = std::make_shared<op::v1::Add>(a, b);
@@ -423,13 +423,13 @@ TEST(pattern, matcher)
     ASSERT_EQ(n.get_pattern_map()[label], add);
 
     // Correct argument order
-    ASSERT_FALSE(n.match(b - a, a - b));
-    auto aab = a * (a - b);
-    auto paab = pattern * (pattern - b);
+    ASSERT_FALSE(n.match(make_shared<op::v1::Subtract>(b, a), make_shared<op::v1::Subtract>(a, b)));
+    auto aab = make_shared<op::v1::Multiply>(a, make_shared<op::v1::Subtract>(a, b));
+    auto paab = make_shared<op::v1::Multiply>(pattern, make_shared<op::v1::Subtract>(pattern, b));
     ASSERT_TRUE(n.match(paab, aab));
-    auto aba = a * (b - a);
+    auto aba = make_shared<op::v1::Multiply>(a, make_shared<op::v1::Subtract>(b, a));
     ASSERT_FALSE(n.match(paab, aba));
-    auto paba = pattern * (b - pattern);
+    auto paba = make_shared<op::v1::Multiply>(pattern, make_shared<op::v1::Subtract>(b, pattern));
     ASSERT_FALSE(n.match(paba, aab));
 
     // Correlations
@@ -751,8 +751,8 @@ TEST(pattern, label_on_skip)
         std::make_shared<op::v1::Multiply>(label, bcst_label), "label_on_skip");
 
     auto const_broadcast = make_shared<op::Broadcast>(iconst, shape, AxisSet{0, 1});
-    auto mul = a * const_broadcast;
-    auto mul_scalar = b * iconst;
+    std::shared_ptr<Node> mul = std::make_shared<op::v1::Multiply>(a, const_broadcast);
+    std::shared_ptr<Node> mul_scalar = std::make_shared<op::v1::Multiply>(b, iconst);
     ASSERT_TRUE(matcher->match(mul));
     ASSERT_EQ(matcher->get_pattern_map()[bcst_label], const_broadcast);
     ASSERT_EQ(matcher->get_pattern_map()[const_label], iconst);

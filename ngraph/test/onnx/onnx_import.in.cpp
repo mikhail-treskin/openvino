@@ -378,7 +378,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_missing_input)
             Output<ngraph::Node> B = ng_inputs.at(1);
             Output<ngraph::Node> C = ng_inputs.at(2);
 
-            A = A * C;
+            A = std::make_shared<op::v1::Multiply>(A, C);
             if (!ngraph::op::is_null(B))
             {
                 B = std::make_shared<op::v1::Divide>(B, C);
@@ -398,7 +398,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_missing_input)
             {
                 if (!ngraph::op::is_null(ng_input))
                 {
-                    result = ng_input * result;
+                    result = std::make_shared<op::v1::Multiply>(ng_input, result);
                 }
             }
 
