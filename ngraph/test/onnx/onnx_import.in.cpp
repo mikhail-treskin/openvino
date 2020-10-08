@@ -381,7 +381,7 @@ NGRAPH_TEST(${BACKEND_NAME}, onnx_model_missing_input)
             A = A * C;
             if (!ngraph::op::is_null(B))
             {
-                B = B / C;
+                B = std::make_shared<op::v1::Divide>(B, C);
             }
 
             C = std::make_shared<ngraph::op::v1::Add>(C, C);

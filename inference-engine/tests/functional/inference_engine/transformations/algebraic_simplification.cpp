@@ -184,7 +184,7 @@ TEST(algebraic_simplification, log_no_exp) {
     auto a = make_shared<op::Parameter>(element::f32, Shape{96, 100});
     auto b = make_shared<op::Parameter>(element::f32, Shape{96, 100});
     auto abs_a = make_shared<op::Abs>(a);
-    auto div = abs_a / b;
+    auto div = std::make_shared<op::v1::Divide>(abs_a, b);
     auto log_div = make_shared<op::Log>(div);
 
     auto neg_inner = make_shared<op::Negative>(log_div);

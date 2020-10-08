@@ -131,8 +131,10 @@ OutputVector op::FakeQuantize::decompose_op() const
                          vector<size_t>(shape_size(input_data_shape), m_levels - 1));
 
     // map the number of quantization levels to the nGraph's quantization and dequantization scales
-    const auto quant_scale = (input_high - input_low) / levels_minus_one;
-    const auto dequant_scale = (output_high - output_low) / levels_minus_one;
+    const auto quant_scale =
+            std::make_shared<op::v1::Divide>(std::make_shared<op::v1::Subtract>(input_high, input_low), levels_minus_one);
+    const auto dequant_scale =
+            std::make_shared<op::v1::Divide>(std::make_shared<op::v1::Subtract>(output_high, output_low), levels_minus_one);
 
     // zero_point type needs to match the quantization output type
     const auto zero_point = Constant::create(element::i32, data.get_shape(), {0.0});
