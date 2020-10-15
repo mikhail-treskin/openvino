@@ -84,14 +84,4 @@ protected:
 
     static void perform_nan_check(const std::vector<std::shared_ptr<HostTensor>>&,
                                   const Node* op = nullptr);
-            break;
-        }
-        case OP_TYPEID::ReorgYolo_v0:
-        {
-            const op::v0::ReorgYolo* reorg_yolo = static_cast<const op::v0::ReorgYolo*>(&node);
-            runtime::reference::reorg_yolo(args[0]->get_data_ptr<char>(),
-                                           out[0]->get_data_ptr<char>(),
-                                           args[0]->get_shape(),
-                                           reorg_yolo->get_strides().at(0),
-                                           args[0]->get_element_type().size());
-};
+    };
