@@ -27,12 +27,12 @@
 #include <ngraph/runtime/reference/one_hot.hpp>
 #include <ngraph/runtime/reference/pad.hpp>
 #include <ngraph/runtime/reference/prior_box.hpp>
+#include <ngraph/runtime/reference/reorg_yolo.hpp>
 #include <ngraph/runtime/reference/reverse_sequence.hpp>
 #include <ngraph/runtime/reference/rnn_cell.hpp>
 #include <ngraph/runtime/reference/select.hpp>
 #include <ngraph/runtime/reference/sequences.hpp>
 #include <ngraph/runtime/reference/sign.hpp>
-#include <ngraph/runtime/reference/reorg_yolo.hpp>
 #include "ngraph/ops.hpp"
 #include "ngraph/runtime/reference/avg_pool.hpp"
 #include "ngraph/runtime/reference/convolution.hpp"
@@ -913,7 +913,7 @@ namespace
         runtime::reference::reorg_yolo(inputs[0]->get_data_ptr<char>(),
                                        outputs[0]->get_data_ptr<char>(),
                                        inputs[0]->get_shape(),
-                                        op->get_strides().at(0),
+                                       op->get_strides().at(0),
                                        inputs[0]->get_element_type().size());
         return true;
     }

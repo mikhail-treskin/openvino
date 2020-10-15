@@ -84,4 +84,4 @@ protected:
 
     static void perform_nan_check(const std::vector<std::shared_ptr<HostTensor>>&,
                                   const Node* op = nullptr);
-    };
+};
