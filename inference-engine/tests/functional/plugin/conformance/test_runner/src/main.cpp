@@ -9,7 +9,7 @@
 #include "gflag_config.hpp"
 #include "conformance.hpp"
 
-static std::vector<std::string> splitStringByDelimiter(std::string str, const std::string& delimiter = ",") {
+static std::vector<std::string> splitStringByDelimiter(std::string str, const std::string &delimiter = ",") {
     size_t delimiterPos;
     std::vector<std::string> irPaths;
     while ((delimiterPos = str.find(delimiter)) != std::string::npos) {
@@ -20,9 +20,9 @@ static std::vector<std::string> splitStringByDelimiter(std::string str, const st
     return irPaths;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     // Workaround for Gtest + Gflag
-    std::vector<char*> argv_gflags_vec;
+    std::vector<char *> argv_gflags_vec;
     int argc_gflags = 0;
     for (int i = 0; i < argc; ++i) {
         std::string arg(argv[i]);
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
             argc_gflags++;
         }
     }
-    char** argv_gflags = argv_gflags_vec.data();
+    char **argv_gflags = argv_gflags_vec.data();
 
     // ---------------------------Parsing and validation of input args--------------------------------------
     gflags::ParseCommandLineNonHelpFlags(&argc_gflags, &argv_gflags, true);
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
         return 0;
     }
     if (FLAGS_extend_report && FLAGS_report_unique_name) {
-        std::cout << "Using mutually exclusive arguments: --extend_report and --report_unique_name" << std::endl;
+        std::cerr << "Using mutually exclusive arguments: --extend_report and --report_unique_name" << std::endl;
         return -1;
     }
 
@@ -54,6 +54,12 @@ int main(int argc, char* argv[]) {
         LayerTestsUtils::Summary::setSaveReportWithUniqueName(true);
     }
     LayerTestsUtils::Summary::setOutputFolder(FLAGS_output_folder);
+
+    std::vector<uint8_t> opsets_to_report;
+    for (const auto &v : splitStringByDelimiter(FLAGS_opsets_to_report)) {
+        opsets_to_report.push_back(std::strtoul(v.c_str(), nullptr, 10));
+    }
+    LayerTestsUtils::Summary::setOpsetsToReport(opsets_to_report);
 
     // ---------------------------Initialization of Gtest env -----------------------------------------------
     ConformanceTests::targetDevice = FLAGS_device.c_str();

@@ -67,6 +67,7 @@ private:
     static bool extendReport;
     static bool saveReportWithUniqueName;
     static const char* outputFolder;
+    static std::vector<uint8_t> opsetsToReport;
 
     friend class SummaryDestroyer;
 
@@ -101,6 +102,8 @@ public:
     static bool getSaveReportWithUniqueName() { return saveReportWithUniqueName; }
 
     static void setOutputFolder(const std::string &val) { outputFolder = val.c_str(); }
+
+    static void setOpsetsToReport(const std::vector<uint8_t> &opsets) { opsetsToReport = opsets; }
 };
 
 }  // namespace LayerTestsUtils

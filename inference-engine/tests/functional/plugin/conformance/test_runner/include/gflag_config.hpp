@@ -20,6 +20,7 @@ static const char input_folders_message[] = "Required. Paths to the input folder
 static const char output_folder_message[] = "Optional. Paths to the output folder to save report.  Default value is \".\"";
 static const char report_unique_name_message[] = "Optional. Allow to save report with unique name (report_pid_timestamp.xml). "
                                                  "Mutually exclusive with --extend_report. Default value is false";
+static const char opsets_to_report_message[] = "Optional. Comma separated list of opsets to be included in report";
 
 DEFINE_bool(h, false, help_message);
 DEFINE_string(device, "CPU", target_device_message);
@@ -28,6 +29,7 @@ DEFINE_string(output_folder, ".", output_folder_message);
 DEFINE_bool(disable_test_config, true, disable_test_config_message);
 DEFINE_bool(extend_report, false, extend_report_config_message);
 DEFINE_bool(report_unique_name, false, report_unique_name_message);
+DEFINE_string(opsets_to_report, "1,2,3,4,5,6,7", opsets_to_report_message);
 
 /**
 * @brief This function shows a help message
@@ -44,4 +46,5 @@ static void showUsage() {
     std::cout << "    --device                         " << target_device_message << std::endl;
     std::cout << "    --input_folders \"<paths>\"        " << input_folders_message << std::endl;
     std::cout << "    --output_folder \"<path>\"         " << output_folder_message << std::endl;
+    std::cout << "    --opsets_to_report \"<versions>\"  " << opsets_to_report_message << std::endl;
 }

@@ -13,6 +13,7 @@ bool Summary::extendReport = false;
 bool Summary::saveReportWithUniqueName = false;
 const char* Summary::outputFolder = ".";
 SummaryDestroyer Summary::destroyer;
+std::vector<uint8_t> Summary::opsetsToReport = {1, 2, 3, 4, 5, 6, 7};
 
 SummaryDestroyer::~SummaryDestroyer() {
     delete p_instance;
@@ -138,13 +139,11 @@ void Summary::saveReport() {
     std::string outputFilePath = outputFolder + std::string(CommonTestUtils::FileSeparator) + filename;
 
     std::vector<ngraph::OpSet> opsets;
-    opsets.push_back(ngraph::get_opset1());
-    opsets.push_back(ngraph::get_opset2());
-    opsets.push_back(ngraph::get_opset3());
-    opsets.push_back(ngraph::get_opset4());
-    opsets.push_back(ngraph::get_opset5());
-    opsets.push_back(ngraph::get_opset6());
-    opsets.push_back(ngraph::get_opset7());
+#define get_opset(version) ngraph::get_opset##version()
+    for (const uint8_t &v : opsetsToReport) {
+        opsets.push_back(get_opset(1));
+    }
+#undef get_opset
     std::set<ngraph::NodeTypeInfo> opsInfo;
     for (const auto &opset : opsets) {
         const auto &type_info_set = opset.get_type_info_set();
