@@ -22,6 +22,9 @@ public:
 
     bool match_any(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref);
 
+    bool match_first(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref,
+                    Matcher::Ptr &first_match);
+
     // TODO: Implement default xml config file generation by Matchers
     void generate_config() {}
 

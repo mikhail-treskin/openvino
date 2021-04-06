@@ -5,7 +5,6 @@
 #include <sstream>
 #include <ngraph/validation_util.hpp>
 #include <ops_cache.hpp>
-#include <op_cloner.hpp>
 #include "inference_engine.hpp"
 #include "common_test_utils/file_utils.hpp"
 
@@ -15,9 +14,11 @@ using namespace SubgraphsDumper;
 
 void OPCache::update_ops_cache(const std::shared_ptr<ngraph::Node> &op,
                                const std::string &source_model) {
+    Matcher::Ptr first_matcher;
+    OPMetaInfo meta;
     const bool op_found = [&] {
         for (auto &&it : m_ops_cache) {
-            if (manager.match_any(it.first, op)) {
+            if (manager.match_first(it.first, op, first_matcher)) {
                 it.second.found_in_models[source_model] += 1;
                 return true;
             }
@@ -26,8 +27,9 @@ void OPCache::update_ops_cache(const std::shared_ptr<ngraph::Node> &op,
     }();
     if (!op_found) {
         // TODO: Extend for subgraphs caching
-        const auto& clone_fn = SubgraphsDumper::ClonersMap::cloners.at(op->get_type_info());
-        m_ops_cache.emplace_back(clone_fn(op), OPInfo(source_model));
+        const auto& clone_fn = first_matcher->cloners_map.at(op->get_type_info());
+        meta.source_model = source_model;
+        m_ops_cache.emplace_back(clone_fn(op), meta);
     }
 }
 

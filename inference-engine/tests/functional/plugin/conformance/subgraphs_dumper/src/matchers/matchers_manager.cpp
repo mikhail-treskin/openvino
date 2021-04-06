@@ -11,6 +11,18 @@ bool MatchersManager::match_any(const std::shared_ptr<ngraph::Node> &node, const
     return std::any_of(matches.begin(), matches.end(), [](bool i) { return i; });
 }
 
+bool MatchersManager::match_first(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref,
+                                Matcher::Ptr &first_match) {
+    for (const auto &it : m_matchers) {
+        auto matches = it.second->match(node, ref);
+        if (matches) {
+            first_match = it.second;
+            return true;
+        }
+    }
+    return false;
+}
+
 bool MatchersManager::match_all(const std::shared_ptr<ngraph::Node> &node, const  std::shared_ptr<ngraph::Node> &ref) {
     const auto matches = this->run_matchers(node, ref);
     return std::all_of(matches.begin(), matches.end(), [](bool i) { return i; });

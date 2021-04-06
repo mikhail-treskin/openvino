@@ -68,14 +68,17 @@ bool compare_constants_data(const std::shared_ptr<ngraph::op::Constant> &op,
 }
 
 const char *SingleOpMatcher::name = "generic_single_op";
+
 bool
-SingleOpMatcher::same_op_type(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
+SingleOpMatcher::same_op_type(const std::shared_ptr<ngraph::Node> &node,
+                              const std::shared_ptr<ngraph::Node> &ref) const {
     return node->get_type_info().name == ref->get_type_info().name &&
            node->get_type_info().version == ref->get_type_info().version;
 }
 
 bool
-SingleOpMatcher::match_inputs(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
+SingleOpMatcher::match_inputs(const std::shared_ptr<ngraph::Node> &node,
+                              const std::shared_ptr<ngraph::Node> &ref) const {
     if (node->get_input_size() != ref->get_input_size()) {
         return false;
     }
@@ -95,7 +98,8 @@ SingleOpMatcher::match_inputs(const std::shared_ptr<ngraph::Node> &node, const s
 }
 
 bool
-SingleOpMatcher::match_outputs(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
+SingleOpMatcher::match_outputs(const std::shared_ptr<ngraph::Node> &node,
+                               const std::shared_ptr<ngraph::Node> &ref) const {
     if (node->get_output_size() != ref->get_output_size()) {
         return false;
     }
@@ -110,16 +114,18 @@ SingleOpMatcher::match_outputs(const std::shared_ptr<ngraph::Node> &node, const 
     return true;
 }
 
-bool SingleOpMatcher::same_attrs(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
+bool
+SingleOpMatcher::same_attrs(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
     return attributes::compare(node.get(), ref.get(), Comparator::CmpValues::ATTRIBUTES).valid;
 }
 
-bool SingleOpMatcher::match_ports(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
+bool SingleOpMatcher::match_ports(const std::shared_ptr<ngraph::Node> &node,
+                                  const std::shared_ptr<ngraph::Node> &ref) const {
     const auto &cfg = get_config(node);
     const std::vector<size_t> &ignored_ports = cfg->ignored_ports;
 
     for (size_t port_id = 0; port_id < node->get_input_size(); ++port_id) {
-        if (std::any_of(begin(ignored_ports), end(ignored_ports), [=](size_t p){return p == port_id;})) {
+        if (std::any_of(begin(ignored_ports), end(ignored_ports), [=](size_t p) { return p == port_id; })) {
             continue;
         }
         const auto &cur_node_input = node->input_value(port_id);
@@ -132,13 +138,14 @@ bool SingleOpMatcher::match_ports(const std::shared_ptr<ngraph::Node> &node, con
         if (cur_const_input && ref_const_input &&
             !compare_constants_data(cur_const_input, ref_const_input)) {
             return false;
-        // Check that input nodes on the port both not constants
+            // Check that input nodes on the port both not constants
         } else if ((cur_const_input && !ref_const_input) || (!cur_const_input && ref_const_input)) {
             return false;
         }
     }
     return true;
 }
+
 bool SingleOpMatcher::match(const std::shared_ptr<ngraph::Node> &node, const std::shared_ptr<ngraph::Node> &ref) const {
     return same_op_type(node, ref) &&
            match_inputs(node, ref) &&
@@ -147,6 +154,26 @@ bool SingleOpMatcher::match(const std::shared_ptr<ngraph::Node> &node, const std
            match_ports(node, ref);
 }
 
+namespace {
+std::shared_ptr<ngraph::Node> clone(const std::shared_ptr<ngraph::Node> &node, OPMetaInfo &meta) {
+    ngraph::OutputVector op_inputs;
+    for (const auto &input : node->inputs()) {
+        if (ngraph::op::is_constant(input.get_source_output().get_node_shared_ptr())) {
+            op_inputs.push_back(input.get_source_output().get_node_shared_ptr()->clone_with_new_inputs({}));
+        } else {
+            op_inputs.push_back(std::make_shared<ngraph::op::Parameter>(input.get_element_type(),
+                                                                        input.get_source_output().get_shape()));
+        }
+    }
+    auto op_clone = node->clone_with_new_inputs(op_inputs);
+    return op_clone;
+}
+
+template<typename opType>
+std::shared_ptr<ngraph::Node> clone_node(const std::shared_ptr<ngraph::Node> &node, OPMetaInfo &meta) {
+    return clone(ngraph::as_type_ptr<opType>(node), meta);
+}
+} // namespace
 SingleOpMatcher::SingleOpMatcher() {
     default_configs = {
             std::make_shared<MatcherConfig<>>(std::vector<std::string>{}, std::vector<size_t>{0}),
@@ -163,4 +190,15 @@ SingleOpMatcher::SingleOpMatcher() {
                     ngraph::op::v1::Subtract,
                     ngraph::op::v1::Power>>(std::vector<std::string>{}, std::vector<size_t>{0, 1}),
     };
+#define NGRAPH_OP(NAME, NAMESPACE) {NAMESPACE::NAME::type_info, clone_node<NAMESPACE::NAME>},
+    cloners_map = {
+#include <ngraph/opsets/opset1_tbl.hpp>
+#include <ngraph/opsets/opset2_tbl.hpp>
+#include <ngraph/opsets/opset3_tbl.hpp>
+#include <ngraph/opsets/opset4_tbl.hpp>
+#include <ngraph/opsets/opset5_tbl.hpp>
+#include <ngraph/opsets/opset6_tbl.hpp>
+    };
+#undef NGRAPH_OP
 }
+
